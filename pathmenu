@@ -2,46 +2,29 @@
 
 fn main {
 
-    fn ls {
-        printf %s\n . ..
-        builtin ls -F $*
-    }
-
-    fn pwd {
-        realpath --relative-base=$DIR_INITIAL `{builtin pwd}
-    }
-
     fn iter {
-        if (~ $1 ()) {
-            exit 1
-        } else if (~ $1 .) {
-            realpath $^1
-        } else if (test -d $^1 && cd $^1) {
-            shift
-            $0 `{ls | dmenu} $*
-        } else {
-            realpath $^1
-        }
-    }
-
-    for (arg in (. $*)) {
-        if (test -d $^arg) {
-            DIR_INITIAL = $^arg
-        } else {
-            switch ($^arg) {
-                case -^(A d)
-                    ARGS_LS = ($ARGS_LS $^arg)
-                case -a
-                    ARGS_LS = ($ARGS_LS -A)
-                case *
-                    ARGS_DMENU = ($ARGS_DMENU $^arg)
+        for (i in $*) @ {
+            if (test -d $i && !~ $i .) {
+                cd $i
+                $0 `` $nl { ls | dmenu -p `pwd}
+            } else {
+                realpath $i
             }
         }
     }
-    fn dmenu { builtin dmenu -p `pwd $ARGS_DMENU $* }
-    iter `{ realpath $^DIR_INITIAL }
+
+    if (!~ $DMENU ())
+        fn dmenu { $DMENU $* }
+
+    if (!~ $LS ())
+        fn ls { $LS $* }
+
+    for (i in $*) {
+        if (~ $i .) {
+            iter ./
+        } else iter $^i
+    }
 
 }
 
-ifs=$nl
 main $*
