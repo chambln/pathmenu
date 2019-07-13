@@ -16,13 +16,14 @@ fn main {
     if (!~ $DMENU ())
         fn dmenu { $DMENU $* }
 
-    if (!~ $LS ())
-        fn ls { $LS $* }
-
-    for (i in $*) {
-        if (~ $i .) {
-            iter ./
-        } else iter $^i
+    if (~ $* ()) {
+        iter ./
+    } else {
+        for (i in $*) {
+            if (~ $i .) {
+                iter ./
+            } else iter $^i
+        }
     }
 
 }
