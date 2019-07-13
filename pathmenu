@@ -4,17 +4,14 @@ fn main {
 
     fn iter {
         for (i in $*) @ {
-            if (test -d $i && !~ $i .) {
-                cd $i
+            if (test -d $i && !~ $i . && cd $i) {
                 $0 `` $nl { ls | dmenu -p `pwd}
-            } else {
-                realpath $i
-            }
+            } else realpath $i
         }
     }
 
-    if (!~ $DMENU ())
-        fn dmenu { $DMENU $* }
+    ~ $DMENU () || fn dmenu { $DMENU $* }
+    ~ $LS    () || fn ls    { $LS    $* }
 
     if (~ $* ()) {
         iter ./
