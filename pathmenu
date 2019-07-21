@@ -1,33 +1,17 @@
 #!/usr/bin/env rc
 
-fn main {
-
-    fn la {
-        printf %s\n . ..
-        ls
+fn iter {
+    for (i in $*) @ {
+        if (test -d $i && !~ $i . && cd $i) {
+            $0 `{ printf %s\n . .. `ls | sort | uniq | dmenu -p `pwd }
+        } else realpath $i
     }
-
-    fn iter {
-        for (i in $*) @ {
-            if (test -d $i && !~ $i . && cd $i) {
-                $0 `{ la | dmenu -p `pwd}
-            } else realpath $i
-        }
-    }
-
-    if (~ $* ()) {
-        iter ./
-    } else {
-        for (i in $*) {
-            iter $^i/
-        }
-    }
-
 }
 
 ifs = $nl
-
-BASE_DIR = `pwd
+BASE_DIR=`pwd
 fn pwd { realpath --relative-base=$BASE_DIR . }
-
-main $*
+if (~ $* ()) {
+    iter ./
+} else for (i in $*)
+    iter $^i/
