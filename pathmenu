@@ -11,7 +11,4 @@ fn iter {
 ifs = $nl
 BASE_DIR=`pwd
 fn pwd { realpath --relative-base=$BASE_DIR . }
-if (~ $* ()) {
-    iter ./
-} else for (i in $*)
-    iter $^i/
+~ $* () && iter ./ || iter $*/
