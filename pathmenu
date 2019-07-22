@@ -3,7 +3,7 @@
 fn iter {
     for (i in $*) @ {
         if (test -d $i && !~ $i . && cd $i) {
-            $0 `{ printf %s\n . .. `ls | sort | uniq | dmenu -p `pwd }
+            $0 `{ printf %s\n . .. `ls | sort | uniq | dmenu -i -p `pwd }
         } else realpath $i
     }
 }
