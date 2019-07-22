@@ -19,3 +19,5 @@ reimplementation][2].
     pathmenu [directory ...]
 
 If no arguments are passed, pathmenu starts in the working directory.
+
+Hint: In dmenu, press CTRL+Enter to make multiple selections.
