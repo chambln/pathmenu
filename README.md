@@ -12,7 +12,7 @@ The `plan9port` and `9base` packages satisfy that, but for interactive
 use of *rc* I recommend [installing Byron Rakitzis'
 reimplementation][2].
 
-[2]: https://cosine.blue/2019-06-26-rc-shell-setup.html
+[2]: https://cosine.blue/2019-06-26-rc-shell-setup.html#install-the-rc-shell
 
 ## Usage
 
