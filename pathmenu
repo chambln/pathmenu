@@ -3,7 +3,7 @@
 fn iter {
     for (i in $*) @ {
         if (test -d $i && !~ $i . && cd $i) {
-            $0 `{ ls | dmenu -i -l 20 -p `pwd }
+            $0 `{ la | dmenu -i -l 20 -p `pwd }
         } else realpath $i
     }
 }
@@ -11,7 +11,7 @@ fn iter {
 ifs = $nl
 BASE_DIR=`pwd
 fn pwd { realpath --relative-base=$BASE_DIR . }
-fn ls { printf %s\n . .. `{builtin ls} }
+fn la { printf %s\n . .. `ls }
 if (~ $* ())
     iter ./
 for (i in $*)
