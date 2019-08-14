@@ -16,8 +16,14 @@ reimplementation][2].
 
 ## Usage
 
-    pathmenu [directory ...]
+    pathmenu [FILE ...]
 
-If no arguments are passed, pathmenu starts in the working directory.
+Typically the arguments are directories (other kinds of files are simply
+returned as is). If no arguments are passed, pathmenu starts in the
+working directory.
 
-Hint: In dmenu, press CTRL+Enter to make multiple selections.
+Hints:
+
+  - In dmenu, press CTRL+Enter to make multiple selections.
+  - To specify non-existent directories, type forward slashes into
+    dmenu.
