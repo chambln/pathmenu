@@ -8,11 +8,16 @@ fn iter {
     }
 }
 
-ifs = $nl
-BASE_DIR=`pwd
-fn pwd { realpath --relative-base=$BASE_DIR . }
-fn la { printf %s\n . .. `ls }
-if (~ $* ())
-    iter ./
-for (i in $*)
-    ~ $i . && iter ./ || iter $i
+fn main {
+    ifs = $nl
+    BASE_DIR=`pwd
+    fn realpath { builtin realpath -m --relative-base=$BASE_DIR $* }
+    fn pwd { realpath . }
+    fn la { printf %s\n . .. `{ls --color=no} }
+    if (~ $*)
+        iter ./  # Start in working dir if no args passed.
+    for (i in $*)
+        ~ $i . && iter ./ || iter $i
+}
+
+main $*
