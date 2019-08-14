@@ -1,4 +1,4 @@
-# pathmenu – dynamically select files and folders with dmenu
+# pathmenu
 
 This is a simple [*rc* shell][1] script that allows the user to select
 any number of files and folders by interactively browsing directories.
