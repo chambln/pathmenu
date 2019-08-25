@@ -20,7 +20,7 @@ Usage
    pathmenu [FILE ...]
 
 If no arguments are passed, pathmenu starts in the working directory.
-Selection made are printed to the standard output.
+Selections made are printed to the standard output.
 
 Hints:
 
