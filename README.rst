@@ -23,7 +23,7 @@ Selections made are printed to the standard output.
 
 Hints:
 
--  In dmenu, press CTRL+Enter to make multiple selections.
+-  In dmenu, use CTRL+Enter to make multiple selections.
 -  To specify non-existent directories, type forward slashes into dmenu.
 
 .. _rc: https://9fans.github.io/plan9port/man/man1/rc.html
