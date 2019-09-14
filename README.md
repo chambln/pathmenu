@@ -26,7 +26,7 @@ Rename a file interactively (use with care):
 Get a path from the user as normal, but only suggest directories:
 
     fn ls { builtin ls $* | stest -d }
-    path_given = `pathmenu
+    path_given = ``$nl pathmenu
 
 Browse \~/src/foo/, including hidden files, and edit the selected files:
 
