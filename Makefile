@@ -4,6 +4,8 @@ BIN = $(PREFIX)/bin
 MAN = $(PREFIX)/share/man/man1
 INSTALL = install
 
+all: README.md
+
 install: $(PROG) $(PROG).1
 	$(INSTALL) -d $(BIN)
 	$(INSTALL) -m 0755 $(PROG) $(BIN)
@@ -11,5 +13,11 @@ install: $(PROG) $(PROG).1
 	$(INSTALL) -m 0644 $(PROG).1 $(MAN)
 
 uninstall:
-	rm -f $(BIN)/$(PROG)
-	rm -f $(MAN)/$(PROG).1
+	@rm -fv $(BIN)/$(PROG)
+	@rm -fv $(MAN)/$(PROG).1
+
+README.md: $(PROG).1
+	pandoc -s -t gfm -o $@ $<
+
+clean:
+	@rm -fv README.md
