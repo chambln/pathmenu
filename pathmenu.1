@@ -1,0 +1,59 @@
+.TH "PATHMENU" "1" "September 2019"
+.SH NAME
+pathmenu - browse directories and select files with dmenu
+.SH SYNOPSIS
+\fBpathmenu\fR [\fIFILE\fR]...
+.SH DESCRIPTION
+.PP
+\fBpathmenu\fR is a simple \fBrc\fR(1) shell script (specifically
+Byron Rakitzis\[cq] dialect) that allows the user to select any number
+of files by recursively browsing directories using \fBdmenu\fR(1).
+.PP
+For each \fIFILE\fR: if it\[cq]s a directory, start browsing there;
+otherwise write its path to standard output without starting dmenu.
+With no \fIFILE\fR, start browsing in the working directory.
+Selections are written to standard output.
+.SH EXAMPLES
+.PP
+Rename a file interactively (use with care):
+.IP
+.nf
+\fC
+ifs=$nl mv \[ga]pathmenu \[ga]pathmenu
+\fR
+.fi
+.PP
+Get a path from the user as normal, but only suggest directories:
+.IP
+.nf
+\fC
+fn ls { builtin ls $* | stest -d }
+path_given = \[ga]pathmenu
+\fR
+.fi
+.PP
+Browse \[ti]/src/foo/, including hidden files, and edit the selected
+files:
+.IP
+.nf
+\fC
+fn ls { builtin ls -A $* }
+vim \[ga]\[ga]$nl{pathmenu $home/src/foo}
+\fR
+.fi
+.PP
+Configure \fBxbindkeys\fR(1) to have Super-o start pathmenu in my
+home directory and open the selection in the appropriate program:
+.IP
+.nf
+\fC
+;;; ~/.xbindkeysrc.scm
+(xbindkey \[aq](mod4 o) \[dq]pathmenu | xargs -r -d \[aq]\[rs]n\[aq] xdg-open\[dq])
+\fR
+.fi
+.SH AUTHOR
+Written by Gregory Chamberlain <chambln\[at]protonmail.com>.
+.SH SEE ALSO
+.BR rc (1),
+.BR dmenu (1),
+.BR stest (1)
