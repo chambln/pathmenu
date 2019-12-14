@@ -38,7 +38,7 @@ while :; do
         ;;
     -l|-m|-p|-fn|-nb|-nf|-sb|-sf|-w)
         [ -z "$2" ] && die "Option ‘$1’ expects an argument."
-        dmenu="$dmenu $1 $2"
+        dmenu="$dmenu $1 \"$2\""
         shift 2
         ;;
     -h|--help|-\?)
