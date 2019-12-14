@@ -10,7 +10,9 @@ die() {
 
 iter() {
     for sel in $(eval "$cmd"); do (
-        if [ -d "$sel" ] && cd "$sel"; then
+        if [ "$sel" = ./ ]; then
+            printf '%s\n' "$PWD"
+        elif [ -d "$sel" ] && cd "$sel"; then
             iter
         else
             printf '%s\n' "$PWD/$sel"
