@@ -1,20 +1,61 @@
 #!/bin/sh
 
-_ls() {
-    printf '%s\n' .. .
-    /bin/ls
+dmenu='dmenu -l 8 -p "$PWD"'
+ls='/bin/ls -p'
+
+die() {
+    printf '%s\n' "$@" 1>&2
+    exit 1
 }
 
 iter() {
-    choices="$(_ls | dmenu -l 8)"
-    for choice in $choices; do (
-        if [ -d "$choice" ] && cd "$choice"; then
+    for sel in $(eval "$cmd"); do (
+        if [ -d "$sel" ] && cd "$sel"; then
             iter
         else
-            printf '%s\n' "$PWD/$choice"
+            printf '%s\n' "$PWD/$sel"
         fi
     ) done
 }
+
+ls_before="printf '%s/\n' .. . ;"
+while :; do
+    case "$1" in
+    -A|-a)
+        ls_before=''
+        ls="$ls $1"
+        shift
+        ;;
+    -r|-t|-1)
+        ls="$ls $1"
+        shift
+        ;;
+    -b|-f|-i|-v)
+        dmenu="$dmenu $1"
+        shift
+        ;;
+    -l|-m|-p|-fn|-nb|-nf|-sb|-sf|-w)
+        [ -z "$2" ] && die "Option ‘$1’ expects an argument."
+        dmenu="$dmenu $1 $2"
+        shift 2
+        ;;
+    -h|--help|-\?)
+        printf '%s\n' 'Usage: pathmenu [OPTION]... [DIRECTORY]...'
+        exit
+        ;;
+    --)
+        shift
+        break
+        ;;
+    -*)
+        die 'No such option ‘$1’.'
+        ;;
+    *)
+        break
+        ;;
+    esac
+done
+cmd="( $ls_before $ls ) | $dmenu"
 
 set -f; IFS='
 '
