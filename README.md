@@ -4,7 +4,7 @@ pathmenu - browse directories and select files with dmenu
 
 # SYNOPSIS
 
-**pathmenu** \[*FILE*\]...
+**pathmenu** \[*DIRECTORY*\]...
 
 # DESCRIPTION
 
@@ -12,10 +12,8 @@ pathmenu - browse directories and select files with dmenu
 Rakitzis’ dialect) that allows the user to select any number of files by
 recursively browsing directories using **dmenu**(1).
 
-For each *FILE*: if it’s a directory, start browsing there; otherwise
-write its path to standard output without starting dmenu. With no
-*FILE*, start browsing in the working directory. Selections are written
-to standard output.
+With no *DIRECTORY*, start in the working directory. Selections are
+written to standard output.
 
 # EXAMPLES
 
