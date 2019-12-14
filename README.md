@@ -8,34 +8,34 @@ pathmenu - browse directories and select files with dmenu
 
 # DESCRIPTION
 
-**pathmenu** is a simple **rc**(1) shell script (specifically Byron
-Rakitzis’ dialect) that allows the user to select any number of files by
-recursively browsing directories using **dmenu**(1).
+**pathmenu** is a simple POSIX shell script that allows the user to
+select any number of files by recursively browsing directories using
+**dmenu**(1).
 
 With no *DIRECTORY*, start in the working directory. Selections are
 written to standard output.
 
 # EXAMPLES
 
-Rename a file interactively (use with care):
+Interactively move files (use with care):
 
-    ifs=$nl mv `pathmenu `pathmenu
+    IFS='
+    ' mv -i -- $(pathmenu -p Source) $(pathmenu -p Destination)
 
-Get a path from the user as normal, but only suggest directories:
+Suggest only directories:
 
-    fn ls { builtin ls $* | stest -d }
-    path_given = ``$nl pathmenu
+    pathmenu -d
 
 Browse \~/src/foo/, including hidden files, and edit the selected files:
 
-    fn ls { builtin ls -A $* }
-    vim ``$nl{pathmenu $home/src/foo}
+    IFS='
+    ' $EDITOR $(pathmenu -a ~/src/foo)
 
 Configure **xbindkeys**(1) to have Super-o start pathmenu in my home
 directory and open the selection in the appropriate program:
 
     ;;; ~/.xbindkeysrc.scm
-    (xbindkey '(mod4 o) "pathmenu | xargs -r -d '\n' xdg-open")
+    (xbindkey '(mod4 o) "IFS='\n' xdg-open $(pathmenu)")
 
 # AUTHOR
 
@@ -43,4 +43,4 @@ Written by Gregory Chamberlain \<chambln@protonmail.com\>.
 
 # SEE ALSO
 
-**rc**(1), **dmenu**(1), **stest**(1)
+**dmenu**(1), **ls**(1), **stest**(1), **test**(1)

@@ -5,28 +5,28 @@ pathmenu - browse directories and select files with dmenu
 \fBpathmenu\fR [\fIDIRECTORY\fR]...
 .SH DESCRIPTION
 .PP
-\fBpathmenu\fR is a simple \fBrc\fR(1) shell script (specifically
-Byron Rakitzis\[cq] dialect) that allows the user to select any number
-of files by recursively browsing directories using \fBdmenu\fR(1).
+\fBpathmenu\fR is a simple POSIX shell script that allows the user to
+select any number of files by recursively browsing directories using
+\fBdmenu\fR(1).
 .PP
 With no \fIDIRECTORY\fR, start in the working directory.
 Selections are written to standard output.
 .SH EXAMPLES
 .PP
-Rename a file interactively (use with care):
+Interactively move files (use with care):
 .IP
 .nf
 \fC
-ifs=$nl mv \[ga]pathmenu \[ga]pathmenu
+IFS=\[aq]
+\[aq] mv -i -- $(pathmenu -p Source) $(pathmenu -p Destination)
 \fR
 .fi
 .PP
-Get a path from the user as normal, but only suggest directories:
+Suggest only directories:
 .IP
 .nf
 \fC
-fn ls { builtin ls $* | stest -d }
-path_given = \[ga]\[ga]$nl pathmenu
+pathmenu -d
 \fR
 .fi
 .PP
@@ -35,8 +35,8 @@ files:
 .IP
 .nf
 \fC
-fn ls { builtin ls -A $* }
-vim \[ga]\[ga]$nl{pathmenu $home/src/foo}
+IFS=\[aq]
+\[aq] $EDITOR $(pathmenu -a \[ti]/src/foo)
 \fR
 .fi
 .PP
@@ -46,12 +46,13 @@ home directory and open the selection in the appropriate program:
 .nf
 \fC
 ;;; ~/.xbindkeysrc.scm
-(xbindkey \[aq](mod4 o) \[dq]pathmenu | xargs -r -d \[aq]\[rs]n\[aq] xdg-open\[dq])
+(xbindkey \[aq](mod4 o) \[dq]IFS='\[rs]n' xdg-open $(pathmenu)\[dq])
 \fR
 .fi
 .SH AUTHOR
 Written by Gregory Chamberlain <chambln\[at]protonmail.com>.
 .SH SEE ALSO
-.BR rc (1),
 .BR dmenu (1),
-.BR stest (1)
+.BR ls (1),
+.BR stest (1),
+.BR test (1)
