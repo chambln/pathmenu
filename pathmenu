@@ -1,23 +1,23 @@
-#!/usr/bin/env rc
+#!/bin/sh
 
-fn iter {
-    for (i in $*) @ {
-        if (test -d $i && !~ $i . && cd $i) {
-            $0 `{ la | dmenu -i -l 20 -p `pwd }
-        } else realpath $i
-    }
+_ls() {
+    printf '%s\n' .. .
+    /bin/ls
 }
 
-fn main {
-    ifs = $nl
-    BASE_DIR=`pwd
-    fn realpath { builtin realpath -m --relative-base=$BASE_DIR $* }
-    fn pwd { realpath . }
-    fn la { printf %s\n .. . `{ls --color=no} }
-    if (~ $*)
-        iter ./  # Start in working dir if no args passed.
-    for (i in $*)
-        ~ $i . && iter ./ || iter $i
+iter() {
+    choices="$(_ls | dmenu -l 8)"
+    for choice in $choices; do (
+        if [ -d "$choice" ] && cd "$choice"; then
+            iter
+        else
+            printf '%s\n' "$PWD/$choice"
+        fi
+    ) done
 }
 
-main $*
+set -f; IFS='
+'
+for i in "${@:-.}"; do
+    ( cd "$i" && iter )
+done
