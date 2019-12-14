@@ -50,7 +50,7 @@ while :; do
         break
         ;;
     -*)
-        die 'No such option ‘$1’.'
+        die "No such option ‘$1’."
         ;;
     *)
         break
