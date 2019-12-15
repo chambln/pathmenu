@@ -1,0 +1,46 @@
+#!/bin/sh
+
+dice() {
+    for last; do :; done
+    cd "$(dirname "$last")"
+    IFS=' 	'
+    prog="$( dmenu_path | dmenu | sed q )"
+    if [ -n "$prog" ]; then
+        case "$prog" in
+        rm|rm[[:space:]]*)
+            polar="$(printf '%s\n' no yes | dmenu -p "Remove $# files?")"
+            [ "$polar" = yes ] && $prog "$@"
+            ;;
+        mv|mv[[:space:]]*)
+            last="$( pathmenu -i -l 20 | sed q )"
+            [ -z "$last" ] && exit 1
+            [ -n "$last" ] && $prog "$@" "$last"
+            ;;
+        cp|cp[[:space:]]*)
+            last="$( pathmenu -i -l 20 | sed q )"
+            [ -z "$last" ] && exit 1
+            [ -n "$last" ] && $prog "$@" "$last"
+            ;;
+        ln|ln[[:space:]]*)
+            last="$( pathmenu -i -l 20 | sed q )"
+            [ -z "$last" ] && exit 1
+            [ -n "$last" ] && $prog "$@" "$last"
+            ;;
+        *)
+            $prog "$@" &
+            ;;
+        esac
+    fi
+}
+
+main() {
+    while :; do
+        IFS='
+'
+        sels="$(pathmenu -i -l 20)"
+        [ -z "$sels" ] && exit
+        dice "$@" $sels
+    done
+}
+
+main
