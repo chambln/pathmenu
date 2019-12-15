@@ -9,22 +9,22 @@ dice() {
         case "$prog" in
         rm|rm[[:space:]]*)
             polar="$(printf '%s\n' no yes | dmenu -p "Remove $# files?")"
-            [ "$polar" = yes ] && $prog "$@"
+            [ "$polar" = yes ] && $prog -- "$@"
             ;;
         mv|mv[[:space:]]*)
             last="$( pathmenu -i -l 20 | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog "$@" "$last"
+            [ -n "$last" ] && $prog -- "$@" "$last"
             ;;
         cp|cp[[:space:]]*)
             last="$( pathmenu -i -l 20 | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog "$@" "$last"
+            [ -n "$last" ] && $prog -- "$@" "$last"
             ;;
         ln|ln[[:space:]]*)
             last="$( pathmenu -i -l 20 | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog "$@" "$last"
+            [ -n "$last" ] && $prog -- "$@" "$last"
             ;;
         *)
             $prog "$@"
