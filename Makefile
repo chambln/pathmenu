@@ -6,7 +6,7 @@ INSTALL = install
 
 all: README.md
 
-install: $(PROG) $(PROG).1
+install: $(PROG) $(PROG).1 dicemenu dicemenu.1
 	$(INSTALL) -d $(BIN)
 	$(INSTALL) -m 0755 $(PROG) dicemenu $(BIN)
 	$(INSTALL) -d $(MAN)
