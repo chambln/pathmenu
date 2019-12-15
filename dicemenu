@@ -1,5 +1,10 @@
 #!/bin/sh
 
+_dmenu_path() {
+    printf '%s\n' xdg-open cp ln mv rm
+    dmenu_path
+}
+
 dice() {
     for last; do :; done
     cd "$(dirname "$last")"
