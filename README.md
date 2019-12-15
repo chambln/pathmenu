@@ -37,6 +37,9 @@ directory and open the selection in the appropriate program:
     ;;; ~/.xbindkeysrc.scm
     (xbindkey '(mod4 o) "IFS='\n' xdg-open $(pathmenu)")
 
+See also **dicemenu**(1) for a (very) basic file manager built on
+pathmenu.
+
 # AUTHOR
 
 Written by Gregory Chamberlain \<chambln@protonmail.com\>.
