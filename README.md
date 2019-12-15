@@ -43,4 +43,4 @@ Written by Gregory Chamberlain \<chambln@protonmail.com\>.
 
 # SEE ALSO
 
-**dmenu**(1), **ls**(1), **stest**(1), **test**(1)
+**dicemenu**(1), **dmenu**(1)

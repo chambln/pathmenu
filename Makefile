@@ -8,13 +8,13 @@ all: README.md
 
 install: $(PROG) $(PROG).1
 	$(INSTALL) -d $(BIN)
-	$(INSTALL) -m 0755 $(PROG) $(BIN)
+	$(INSTALL) -m 0755 $(PROG) dicemenu $(BIN)
 	$(INSTALL) -d $(MAN)
-	$(INSTALL) -m 0644 $(PROG).1 $(MAN)
+	$(INSTALL) -m 0644 $(PROG).1 dicemenu.1 $(MAN)
 
 uninstall:
-	@rm -fv $(BIN)/$(PROG)
-	@rm -fv $(MAN)/$(PROG).1
+	@rm -fv $(BIN)/$(PROG) $(BIN)/dicemenu
+	@rm -fv $(MAN)/$(PROG).1 $(MAN)/dicemenu.1
 
 README.md: $(PROG).1
 	pandoc -s -t gfm -o $@ $<

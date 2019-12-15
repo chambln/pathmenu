@@ -1,0 +1,27 @@
+.TH "DICEMENU" "1" "December 2019"
+.SH NAME
+dicemenu - manage files with pathmenu
+.SH SYNOPSIS
+\fBdicemenu\fR [\fIDIRECTORY\fR]
+.SH DESCRIPTION
+.PP
+\fBdicemenu\fR is a simple POSIX shell script that allows the user to
+select any number of files using \fBpathmenu\fR(1) and then specify a
+command to which they should be appended as arguments.
+.PP
+With no \fIDIRECTORY\fR, start in the working directory.  Selections are
+written to standard output.
+.PP
+Exceptions are made for some programs: specifying a \[oq]mv\[cq],
+\[oq]cp\[cq] or \[oq]ln\[cq] command will prompt for a destination file
+or directory (if multiple destinations are given, only the first is used
+and the rest are ignored); specifying an \[oq]rm\[cq] command will prompt
+for confirmation.
+.PP
+\fBWARNING:\fR Use potentially destructive programs such as \fBrm\fR(1)
+with the same caution as you would in a shell.
+.SH AUTHOR
+Written by Gregory Chamberlain <chambln\[at]protonmail.com>.
+.SH SEE ALSO
+.BR pathmenu (1),
+.BR dmenu (1)

@@ -33,10 +33,12 @@ dice() {
     fi
 }
 
+cd "${1:-.}"
+
 while :; do
     IFS='
 '
     sels="$(pathmenu -i -l 20)"
     [ -z "$sels" ] && exit
-    dice "$@" $sels
+    dice $sels
 done
