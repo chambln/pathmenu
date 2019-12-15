@@ -4,7 +4,8 @@ dice() {
     for last; do :; done
     cd "$(dirname "$last")"
     IFS=' 	'
-    prog="$( dmenu_path | dmenu -p "Pass $# files as arguments to" | sed q )"
+    prog="$( _dmenu_path | dmenu -p "Pass $# files as arguments to" | sed q )"
+    [ -z "$prog" ] && return 1
     if [ -n "$prog" ]; then
         case "$prog" in
         rm|rm[[:space:]]*)
@@ -39,6 +40,5 @@ while :; do
     IFS='
 '
     sels="$(pathmenu -i -l 20)"
-    [ -z "$sels" ] && exit
-    dice $sels
+    dice $sels || break
 done
