@@ -1,42 +1,52 @@
 #!/bin/sh
 
 _dmenu_path() {
-    printf '%s\n' xdg-open cp ln mv rm
-    dmenu_path
+    cat <<EOF
+xdg-open
+xdotool type
+${EDITOR:-vi}
+${TERMINAL:-st} ${EDITOR:-vi}
+cp -nrv
+ln -sv
+mv -nv
+rm -dv
+EOF
+dmenu_path | sed '/\(xdg-open\|cp\|ln\|mv\|rm\)/d'
 }
 
 dice() {
     for last; do :; done
     cd "$(dirname "$last")"
     IFS=' 	'
-    prog="$( _dmenu_path | dmenu -p "Pass $# files as arguments to" | sed q )"
-    [ -z "$prog" ] && return 1
+    prog="$( _dmenu_path | dmenu -l 9 -p "Pass $# files as arguments to" | sed q )"
+    [ -z "$prog" ] && exit 1
     if [ -n "$prog" ]; then
         case "$prog" in
         rm|rm[[:space:]]*)
             polar="$(printf '%s\n' no yes | dmenu -p "Remove $# files?")"
-            [ "$polar" = yes ] && $prog -- "$@"
+            [ "$polar" = yes ] && $prog -- "$@" 2>&1 | dmenu -l 5 -p 'stdout and stderr' >/dev/null 2>&1
             ;;
         mv|mv[[:space:]]*)
-            last="$( pathmenu -i -l 20 | sed q )"
+            last="$( pathmenu -i -l 20 -p "Move $# files to" | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last"
+            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1 | dmenu -l 5 -p 'stdout and stderr' >/dev/null 2>&1
             ;;
         cp|cp[[:space:]]*)
-            last="$( pathmenu -i -l 20 | sed q )"
+            last="$( pathmenu -i -l 20 -p "Copy $# files to" | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last"
+            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1 | dmenu -l 5 -p 'stdout and stderr' >/dev/null 2>&1
             ;;
         ln|ln[[:space:]]*)
-            last="$( pathmenu -i -l 20 | sed q )"
+            last="$( pathmenu -i -l 20 -p "Link to $# files from" | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last"
+            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1 | dmenu -l 5 -p 'stdout and stderr' >/dev/null 2>&1
             ;;
         *)
             $prog "$@"
             ;;
         esac
     fi
+    return 0
 }
 
 cd "${1:-.}"
