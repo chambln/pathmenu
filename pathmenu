@@ -20,15 +20,13 @@ iter() {
     ) done
 }
 
-ls_before="printf '%s/\n' .. . ;"
 while :; do
     case "$1" in
-    -A|-a)
-        ls_before=''
-        ls="$ls $1"
+    -d)
+        dirs_only=true
         shift
-        ;;
-    -r|-t|-1)
+	;;
+    -a|-r|-t|-1)
         ls="$ls $1"
         shift
         ;;
@@ -57,7 +55,12 @@ while :; do
         ;;
     esac
 done
-cmd="( $ls_before $ls ) | $dmenu"
+
+if [ "$dirs_only" = true ]; then
+    cmd="( printf '%s/\n' .. . ; stest -d \$( $ls ) ) | $dmenu"
+else
+    cmd="( printf '%s/\n' .. . ; $ls ) | $dmenu"
+fi
 
 set -f; IFS='
 '
