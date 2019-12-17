@@ -24,28 +24,28 @@ dice() {
         case "$prog" in
         rm|rm[[:space:]]*)
             polar="$(printf '%s\n' no yes | dmenu -p "Remove $# files?")"
-            [ "$polar" = yes ] && $prog -- "$@" 2>&1 | dmenu -l 5 -p 'stdout and stderr' >/dev/null 2>&1
+            [ "$polar" = yes ] && $prog -- "$@"
             ;;
         mv|mv[[:space:]]*)
             last="$( pathmenu -i -l 20 -p "Move $# files to" | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1 | dmenu -l 5 -p 'stdout and stderr' >/dev/null 2>&1
+            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
             ;;
         cp|cp[[:space:]]*)
             last="$( pathmenu -i -l 20 -p "Copy $# files to" | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1 | dmenu -l 5 -p 'stdout and stderr' >/dev/null 2>&1
+            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
             ;;
         ln|ln[[:space:]]*)
             last="$( pathmenu -i -l 20 -p "Link to $# files from" | sed q )"
             [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1 | dmenu -l 5 -p 'stdout and stderr' >/dev/null 2>&1
+            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
             ;;
         *)
             $prog "$@"
             ;;
         esac
-    fi
+    fi | dmenu -l 10 -p 'stdout and stderr' >/dev/null 2>&1
     return 0
 }
 
