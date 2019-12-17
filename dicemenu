@@ -16,7 +16,7 @@ dmenu_path | sed '/\(xdg-open\|cp\|ln\|mv\|rm\)/d'
 
 dice() {
     for last; do :; done
-    cd "$(dirname "$last")"
+    [ -d "$last" ] && cd "$last" || cd "$(dirname "$last")"
     IFS=' 	'
     prog="$( _dmenu_path | dmenu -l 9 -p "Pass $# files as arguments to" | sed q )"
     [ -z "$prog" ] && exit 1
