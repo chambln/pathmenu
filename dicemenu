@@ -4,7 +4,6 @@ _dmenu_path() {
     cat <<EOF
 xdg-open
 xdotool type
-${EDITOR:-vi}
 ${TERMINAL:-st} ${EDITOR:-vi}
 cp -nrv
 ln -sv
