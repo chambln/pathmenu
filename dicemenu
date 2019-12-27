@@ -9,6 +9,7 @@ cp -nrv
 ln -sv
 mv -nv
 rm -dv
+mkdir -pv
 cd
 EOF
 dmenu_path | sed '/\(xdg-open\|cp\|ln\|mv\|rm\)/d'
