@@ -24,7 +24,7 @@ dice() {
     if [ -n "$prog" ]; then
         case "$prog" in
         rm|rm[[:space:]]*)
-            polar="$(printf '%s\n' no yes | dmenu -p "Remove $# files?")"
+            polar="$(printf '%s\n' no yes | dmenu -p "Remove $# files?" -sb '#ff5370')"
             [ "$polar" = yes ] && $prog -- "$@"
             ;;
         mv|mv[[:space:]]*)
