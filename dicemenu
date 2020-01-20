@@ -50,11 +50,9 @@ dice() {
     return 0
 }
 
-cd "${1:-.}"
-
 while :; do
     IFS='
 '
-    sels="$(pathmenu -i -l 20)"
+    sels="$(pathmenu -i -l 20 "$@")"
     dice $sels || break
 done
