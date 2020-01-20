@@ -26,7 +26,11 @@ while :; do
         dirs_only=true
         shift
 	;;
-    -a|-r|-t|-1)
+    -a)
+        ls="$ls -A"
+        shift
+        ;;
+    -r|-t|-1)
         ls="$ls $1"
         shift
         ;;
