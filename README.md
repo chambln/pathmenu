@@ -20,7 +20,7 @@ written to standard output.
 Interactively move files (use with care):
 
     IFS='
-    ' mv -i -- $(pathmenu -p Source) $(pathmenu -p Destination)
+    ' mv -iv -- $(pathmenu -p Source) $(pathmenu -p Destination | sed q)
 
 Suggest only directories:
 
