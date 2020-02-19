@@ -4,7 +4,7 @@ pathmenu - browse directories and select files with dmenu
 
 # SYNOPSIS
 
-**pathmenu** \[*DIRECTORY*\]...
+**pathmenu** \[*OPTION*\]... \[*DIRECTORY*\]...
 
 # DESCRIPTION
 
