@@ -38,11 +38,6 @@ while :; do
         dmenu="$dmenu $1"
         shift
         ;;
-    -l|-m|-p|-fn|-nb|-nf|-sb|-sf|-w)
-        [ -z "$2" ] && die "Option ‘$1’ expects an argument."
-        dmenu="$dmenu $1 \"$2\""
-        shift 2
-        ;;
     -h|--help|-\?)
         printf '%s\n' 'Usage: pathmenu [OPTION]... [DIRECTORY]...'
         exit
@@ -51,8 +46,16 @@ while :; do
         shift
         break
         ;;
-    -*)
+    --*)
         die "No such option ‘$1’."
+        ;;
+    -l|-m|-p|-fn|-nb|-nf|-sb|-sf|-w)
+        dmenu="$dmenu $1 \"$2\""
+        shift 2
+        ;;
+    -*)
+        dmenu="$dmenu $1"
+        shift
         ;;
     *)
         break
