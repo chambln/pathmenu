@@ -1,6 +1,6 @@
 #!/bin/sh
 
-dmenu='dmenu -l 8 -p "$PWD"'
+dmenu='dmenu -p "$PWD"'
 ls='/bin/ls -p'
 
 die() {
