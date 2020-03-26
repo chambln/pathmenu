@@ -4,7 +4,7 @@ dmenu='dmenu -p "$PWD"'
 ls='/bin/ls -p'
 
 die() {
-    printf '%s\n' "$@" 1>&2
+    printf "$(basename "$0"): %s\n" "$@" 1>&2
     exit 1
 }
 
