@@ -42,7 +42,7 @@ pathmenu.
 
 # AUTHOR
 
-Written by Gregory Chamberlain \<chambln@protonmail.com\>.
+Written by Gregory Chamberlain \<gregc@posteo.net\>.
 
 # SEE ALSO
 
