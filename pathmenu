@@ -39,9 +39,8 @@ while :; do
         dmenu="$dmenu $1"
         shift
         ;;
-    -h|--help|-\?)
-        printf '%s\n' 'Usage: pathmenu [OPTION]... [DIRECTORY]...'
-        exit
+    -h|--help)
+        die 'Usage: pathmenu [OPTION]... [DIRECTORY]...'
         ;;
     --)
         shift
