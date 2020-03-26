@@ -2,6 +2,7 @@
 
 dmenu='dmenu -p "$PWD"'
 ls='/bin/ls -p'
+set -e
 
 die() {
     printf "$(basename "$0"): %s\n" "$@" 1>&2
