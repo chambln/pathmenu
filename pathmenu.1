@@ -5,9 +5,8 @@ pathmenu - browse directories and select files with dmenu
 \fBpathmenu\fR [\fIOPTION\fR]... [\fIDIRECTORY\fR]...
 .SH DESCRIPTION
 .PP
-\fBpathmenu\fR is a simple POSIX shell script that allows the user to
-select any number of files by recursively browsing directories using
-\fBdmenu\fR(1).
+\fBpathmenu\fR  allows the user to select any number of files by
+recursively browsing directories using \fBdmenu\fR(1).
 .PP
 With no \fIDIRECTORY\fR, start in the working directory.
 Selections are written to standard output.
@@ -18,7 +17,7 @@ Interactively move files (use with care):
 .nf
 \fC
 IFS=\[aq]
-\[aq] mv -iv -- $(pathmenu -p Source) $(pathmenu -p Destination | sed q)
+\[aq] mv -i -- $(pathmenu -p Source) $(pathmenu -p Destination | sed q)
 \fR
 .fi
 .PP
@@ -40,20 +39,10 @@ IFS=\[aq]
 \fR
 .fi
 .PP
-Configure \fBxbindkeys\fR(1) to have Super-o start pathmenu in my
-home directory and open the selection in the appropriate program:
-.IP
-.nf
-\fC
-;;; ~/.xbindkeysrc.scm
-(xbindkey \[aq](mod4 o) \[dq]IFS='\[rs]n' xdg-open $(pathmenu)\[dq])
-\fR
-.fi
-.PP
 See also \fBdicemenu\fR(1) for a (very) basic file manager built on
 pathmenu.
 .SH AUTHOR
-Written by Gregory Chamberlain <gregc\[at]posteo.net>.
+Written by Gregory Chamberlain <greg\[at]cosine.blue>.
 .SH SEE ALSO
 .BR dicemenu (1),
 .BR dmenu (1)

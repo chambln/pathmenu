@@ -8,9 +8,8 @@ pathmenu - browse directories and select files with dmenu
 
 # DESCRIPTION
 
-**pathmenu** is a simple POSIX shell script that allows the user to
-select any number of files by recursively browsing directories using
-**dmenu**(1).
+**pathmenu** allows the user to select any number of files by recursively
+browsing directories using **dmenu**(1).
 
 With no *DIRECTORY*, start in the working directory. Selections are
 written to standard output.
@@ -20,7 +19,7 @@ written to standard output.
 Interactively move files (use with care):
 
     IFS='
-    ' mv -iv -- $(pathmenu -p Source) $(pathmenu -p Destination | sed q)
+    ' mv -i -- $(pathmenu -p Source) $(pathmenu -p Destination | sed q)
 
 Suggest only directories:
 
@@ -31,18 +30,12 @@ Browse \~/src/foo/, including hidden files, and edit the selected files:
     IFS='
     ' $EDITOR $(pathmenu -a ~/src/foo)
 
-Configure **xbindkeys**(1) to have Super-o start pathmenu in my home
-directory and open the selection in the appropriate program:
-
-    ;;; ~/.xbindkeysrc.scm
-    (xbindkey '(mod4 o) "IFS='\n' xdg-open $(pathmenu)")
-
 See also **dicemenu**(1) for a (very) basic file manager built on
 pathmenu.
 
 # AUTHOR
 
-Written by Gregory Chamberlain \<gregc@posteo.net\>.
+Written by Gregory Chamberlain <greg@cosine.blue>.
 
 # SEE ALSO
 
