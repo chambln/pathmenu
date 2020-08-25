@@ -1,48 +1,66 @@
-.TH "PATHMENU" "1" "December 2019"
+.\" pathmenu
+.\" Copyright (c) 2019 Gregory L. Chamberlain
+.\" Available under the MIT License -- see LICENSE file.
+.TH "PATHMENU" "1" "August 2020"
 .SH NAME
-pathmenu - browse directories and select files with dmenu
+pathmenu \- browse and select files with dmenu
 .SH SYNOPSIS
-\fBpathmenu\fR [\fIOPTION\fR]... [\fIDIRECTORY\fR]...
+.B pathmenu
+.BR "" [ \-A | \-F | \-P | \-a | \-d ]
+.IR "" [ "options for dmenu" ]
 .SH DESCRIPTION
 .PP
-\fBpathmenu\fR  allows the user to select any number of files by
-recursively browsing directories using \fBdmenu\fR(1).
-.PP
-With no \fIDIRECTORY\fR, start in the working directory.
-Selections are written to standard output.
-.SH EXAMPLES
-.PP
-Interactively move files (use with care):
+.B pathmenu
+allows the user to browse the filesystem
+and select files
+using
+.BR dmenu (1);
+their file paths are written one per line to standard output.
+.SH OPTIONS
+.TP
+.B \-A
+Show hidden files except \[oq].\[cq] and \[oq]..\[cq].
+See also
+.BR \-a .
+.TP
+.B \-F
+Append forward slashes to directories, analogous to the
+.B \-p
+option for
+.BR ls (1).
+.TP
+.B \-P
+Resolve symbolic links when changing directories.
+See
+.BR cd (1).
+.TP
+.B \-a
+Show hidden files.
 .IP
-.nf
-\fC
-IFS=\[aq]
-\[aq] mv -i -- $(pathmenu -p Source) $(pathmenu -p Destination | sed q)
-\fR
-.fi
+When combined with \-A show only
+visible files,
+\[oq].\[cq] and
+\[oq]..\[cq].
+.TP
+.B \-d
+Show only directories.  Combines predictably with
+.B \-A
+and
+.BR \-a .
+.SH BUGS
 .PP
-Suggest only directories:
-.IP
-.nf
-\fC
-pathmenu -d
-\fR
-.fi
-.PP
-Browse \[ti]/src/foo/, including hidden files, and edit the selected
-files:
-.IP
-.nf
-\fC
-IFS=\[aq]
-\[aq] $EDITOR $(pathmenu -a \[ti]/src/foo)
-\fR
-.fi
-.PP
-See also \fBdicemenu\fR(1) for a (very) basic file manager built on
-pathmenu.
+File names are piped into
+.BR dmenu (1)
+one per line
+nd so file names that contain new line characters
+cannot be listed safely;
+therefore they are omitted.
+A solution might be to encode file names before piping them into dmenu,
+and decode file names selected or written by the user,
+but this is not yet implemented.
 .SH AUTHOR
-Written by Gregory Chamberlain <greg\[at]cosine.blue>.
+Gregory Chamberlain <greg\[at]cosine.blue>.
 .SH SEE ALSO
 .BR dicemenu (1),
 .BR dmenu (1)
+
