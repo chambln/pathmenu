@@ -56,7 +56,7 @@ browse ()
         target=${target%${target##*[^/]}}
         [ -d "$target" ] && target=$target/
 
-        # ‘${target:-~/}:’ Empty selection refers to the home
+        # ‘${target:-~/}’: Empty selection refers to the home
         #                  directory, analogous to ‘cd’ with no
         #                  argument -- see cd(1).
         case ${target:-~/} in
