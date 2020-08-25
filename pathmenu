@@ -14,7 +14,7 @@ browse ()
         [ -e "$match" ] || continue
 
         # Append a forward slash to directories.
-        [ -d "$match" ] && match=$match/
+        [ -d "$match" ] && match=${match%/}/
 
         case $match in
             # Skip file names that contain a new line character, because
@@ -67,6 +67,26 @@ browse ()
     done
 }
 
-patterns='./.* ./*'
+while true
+do
+    case $1 in
+        -a) a=a ;;
+        -A) A=A ;;
+        -d) d=d ;;
+        *) break ;;
+    esac
+    shift
+done
+
+case ${A:--}${a:--}${d:--} in
+    ---) patterns='./*' ;;
+    A--) patterns='./.[^.]* ./..?* ./*' ;;
+    -a-) patterns='./. ./.. ./.[^.]* ./*' ;;
+    Aa-) patterns='./. ./.. ./*' ;;
+    --d) patterns='./*/' ;;
+    A-d) patterns='./.[^.]*/ ./..?*/ ./*/' ;;
+    -ad) patterns='./. ./.. ./.[^.]*/ ./*/' ;;
+    Aad) patterns='./. ./.. ./*/' ;;
+esac
 
 browse "$@"
