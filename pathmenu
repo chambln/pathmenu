@@ -22,8 +22,8 @@ browse ()
             ./-*/) printf '%s\n' "$match" ;;
 
             # For other matches, ‘$match’ and ‘./$match’ are
-            # almost certainly equivalent, so we can remove the ‘./’
-            # prefix for the sake of readability.
+            # almost certainly equivalent, so we can safely remove the
+            # ‘./’ prefix for the sake of readability.
             #
             # The only exception I’m aware of is when ‘$match/’ exists
             # in a CDPATH directory that is positioned _in front of_
@@ -33,7 +33,7 @@ browse ()
             #
             # My understanding is this:  With CDPATH unset or empty,
             # or ‘CDPATH=.’, or ‘CDPATH=.:*’ where * is anything, then
-            # ‘$match’ can only refer to ‘./$match’.
+            # ‘$match’ necessarily means ‘./$match’.
             *) printf '%s\n' "${match#./}"
         esac
     done | dmenu -p "$PWD" "$@" | while IFS= read -r target
