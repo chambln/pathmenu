@@ -57,8 +57,11 @@ browse ()
             .)   printf '%s\n' "${PWD%/}" ;;
             ./)  printf '%s\n' "${PWD%/}"/ ;;
             ..)  printf '%s\n' "${PWD%/?*}" ;;
-            */)  ( cd -P "$target" >/dev/null 2>&1 && browse "$@" ) ||
-                   printf '%s\n' "${PWD%/}/${target#./}"  ;;
+            */)  ( if [ -d "$target" ] && cd -P "$target" >/dev/null 2>&1
+                   then browse "$@"
+                   else printf '%s\n' "${PWD%/}/${target#./}"
+                   fi
+                 ) ;;
             *)   printf '%s\n' "${PWD%/}/${target#./}"
         esac
     done
