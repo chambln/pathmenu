@@ -3,7 +3,7 @@
 # Available under the MIT License -- see LICENSE file.
 
 PROG = pathmenu
-PREFIX = /usr
+PREFIX = /usr/local
 BIN = $(PREFIX)/bin
 MAN = $(PREFIX)/share/man/man1
 INSTALL = install
