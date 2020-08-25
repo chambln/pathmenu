@@ -49,7 +49,7 @@ browse ()
         # Strip URI prefix ‘file://’.
         [ "${target##file://*}" ] && target=${target#file://}
 
-        # ‘${target:-~/}’: Empty selection refers to the home
+        # ‘${target:=~/}’: Empty selection refers to the home
         #                  directory, analogous to ‘cd’ with no
         #                  argument -- see cd(1).
         case ${target:=~/} in
