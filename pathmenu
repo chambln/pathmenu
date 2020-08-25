@@ -52,7 +52,7 @@ browse ()
         # ‘${target:-~/}’: Empty selection refers to the home
         #                  directory, analogous to ‘cd’ with no
         #                  argument -- see cd(1).
-        case ${target:-~/} in
+        case ${target:=~/} in
             -)   ( cd - >/dev/null 2>&1 && browse "$@" ) ;;
             .)   printf '%s\n' "${PWD%/}" ;;
             ./)  printf '%s\n' "${PWD%/}"/ ;;
