@@ -23,5 +23,8 @@ uninstall:
 README.md: $(PROG).1
 	pandoc -s -t gfm -o $@ $<
 
+test: pathmenu dicemenu
+	shellcheck -s sh $^
+
 clean:
 	@rm -fv README.md
