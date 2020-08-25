@@ -70,11 +70,11 @@ browse ()
 while true
 do
     case $1 in
-        -a) a=a ;;
         -A) A=A ;;
-        -d) d=d ;;
         -F) append_slashes=true ;;
         -P) cd_opt=$1 ;;
+        -a) a=a ;;
+        -d) d=d ;;
         *) break ;;
     esac
     shift
