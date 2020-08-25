@@ -1,42 +1,24 @@
-# NAME
+# pathmenu
 
-pathmenu - browse directories and select files with dmenu
+pathmenu is a purely POSIX and shellcheck-verified shell script for
+using dmenu to browse the filesystem and select files.  It could be used
+as part of a larger program or interactively in the shell.
 
-# SYNOPSIS
+# Dependencies
 
-**pathmenu** \[*OPTION*\]... \[*DIRECTORY*\]...
+ - [**dmenu**(1)](https://tools.suckless.org/dmenu/)
 
-# DESCRIPTION
+It would be very simple to edit pathmenu and swap out dmenu for something
+else like **rofi**(1), **fzf**(1) or even **vipe**(1) from moreutils.
 
-**pathmenu** allows the user to select any number of files by recursively
-browsing directories using **dmenu**(1).
+# Installation
 
-With no *DIRECTORY*, start in the working directory. Selections are
-written to standard output.
+    make install
+    
+Optionally specify a prefix; for example:
 
-# EXAMPLES
+    make PREFIX=~/.local install
 
-Interactively move files (use with care):
+# Usage
 
-    IFS='
-    ' mv -i -- $(pathmenu -p Source) $(pathmenu -p Destination | sed q)
-
-Suggest only directories:
-
-    pathmenu -d
-
-Browse \~/src/foo/, including hidden files, and edit the selected files:
-
-    IFS='
-    ' $EDITOR $(pathmenu -a ~/src/foo)
-
-See also **dicemenu**(1) for a (very) basic file manager built on
-pathmenu.
-
-# AUTHOR
-
-Written by Gregory Chamberlain <greg@cosine.blue>.
-
-# SEE ALSO
-
-**dicemenu**(1), **dmenu**(1)
+See **pathmenu**(1).
