@@ -49,13 +49,6 @@ browse ()
         # Strip URI prefix ‘file://’.
         [ "${target##file://*}" ] && target=${target#file://}
 
-        # Ensure that files have no trailing slashes, and directories have
-        # exactly one trailing slash.
-        #   • ‘${target##*[^/]}’:            copy of all trailing slashes;
-        #   • ‘${target%${target##*[^/]}}’:  removes that suffix.
-        target=${target%${target##*[^/]}}
-        [ -d "$target" ] && target=$target/
-
         # ‘${target:-~/}’: Empty selection refers to the home
         #                  directory, analogous to ‘cd’ with no
         #                  argument -- see cd(1).
