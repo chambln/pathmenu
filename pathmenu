@@ -39,13 +39,13 @@ browse ()
     done | dmenu -p "$PWD" "$@" | while IFS= read -r target
     do
         case $target in
-            */|-)
-                # Recursive case: Descend into $target and browse.
-                ( cd -P "$target" >/dev/null 2>&1 && browse "$@" )
-                ;;
-            *)
-                # Base case.
-                printf '%s\n' "$PWD/${target#./}"
+        */|-)
+            # Recursive case: Descend into $target and browse.
+            ( cd -P "$target" >/dev/null 2>&1 && browse "$@" )
+            ;;
+        *)
+            # Base case.
+            printf '%s\n' "$PWD/${target#./}"
         esac
     done
 }
