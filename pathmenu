@@ -1,76 +1,55 @@
 #!/bin/sh
 
-dmenu='dmenu -p "$PWD"'
-ls='/bin/ls -p'
-set -e
-
-die() {
-    printf "$(basename "$0"): %s\n" "$@" 1>&2
-    exit 1
-}
-
-iter() {
-    for sel in $(eval "$cmd"); do (
-        if [ "$sel" = ./ ]; then
-            printf '%s\n' "$PWD"
-        elif [ -d "$sel" ] && cd "$sel"; then
-            iter
-        else
-            printf '%s\n' "$PWD/$sel"
-        fi
-    ) done
-}
-
-while :; do
-    case "$1" in
-    -d)
-        dirs_only=true
-        shift
-	;;
-    -a)
-        ls="$ls -A"
-        shift
-        ;;
-    -r|-t|-1)
-        ls="$ls $1"
-        shift
-        ;;
-    -b|-f|-i|-v)
-        dmenu="$dmenu $1"
-        shift
-        ;;
-    -h|--help)
-        die 'Usage: pathmenu [OPTION]... [DIRECTORY]...'
-        ;;
-    --)
-        shift
-        break
-        ;;
-    --*)
-        die "No such option ‘$1’."
-        ;;
-    -l|-m|-p|-fn|-nb|-nf|-sb|-sf|-w)
-        dmenu="$dmenu $1 \"$2\""
-        shift 2
-        ;;
-    -*)
-        dmenu="$dmenu $1"
-        shift
-        ;;
-    *)
-        break
-        ;;
-    esac
-done
-
-if [ "$dirs_only" = true ]; then
-    cmd="( printf '%s/\n' .. . ; stest -d \$( $ls ) ) | $dmenu"
-else
-    cmd="( printf '%s/\n' .. . ; $ls ) | $dmenu"
-fi
-
-set -f; IFS='
+newline='
 '
-for i in "${@:-.}"; do
-    ( cd "$i" && iter )
-done
+
+browse ()
+{
+    for match in $patterns
+    do
+        # Skip unexpanded patterns.
+        [ -e "$match" ] || continue
+
+        # Append a forward slash to directories.
+        [ -d "$match" ] && match=$match/
+
+        case $match in
+            # Skip file names that contain a new line character.
+            *"$newline"*) continue ;;
+
+            # Protect ‘$match/’ from cd(1) options parsing by keeping
+            # the ‘./’ prefix.
+            ./-*/) printf '%s\n' "$match" ;;
+
+            # For other matches, ‘$match’ and ‘./$match’ are
+            # almost certainly equivalent, so we can remove the ‘./’
+            # prefix for the sake of readability.
+            #
+            # The only exception I’m aware of is when ‘$match/’ exists
+            # in a CDPATH directory that is positioned _in front of_
+            # ‘.’, in which case perhaps the user intends to go
+            # there -- especially since their CDPATH is configured that
+            # way. See cd(1).
+            #
+            # My understanding is this:  With CDPATH unset or empty,
+            # or ‘CDPATH=.’, or ‘CDPATH=.:*’ where * is anything, then
+            # ‘$match’ can only refer to ‘./$match’.
+            *) printf '%s\n' "${match#./}"
+        esac
+    done | dmenu -p "$PWD" "$@" | while IFS= read -r target
+    do
+        case $target in
+            */)
+                # Recursive case: Descend into $target and browse.
+                ( cd -P "$target" >/dev/null 2>&1 && browse "$@" )
+                ;;
+            *)
+                # Base case.
+                printf '%s\n' "$PWD/${target#./}"
+        esac
+    done
+}
+
+patterns='./.* ./*'
+
+browse "$@"
