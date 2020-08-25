@@ -1,4 +1,7 @@
 #!/bin/sh
+# dicemenu
+# Copyright (c) 2019 Gregory L. Chamberlain
+# Available under the MIT License -- see LICENSE file.
 
 set -e
 

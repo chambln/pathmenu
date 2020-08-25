@@ -1,3 +1,7 @@
+# pathmenu and dicemenu
+# Copyright (c) 2019 Gregory L. Chamberlain
+# Available under the MIT License -- see LICENSE file.
+
 PROG = pathmenu
 PREFIX = /usr
 BIN = $(PREFIX)/bin
