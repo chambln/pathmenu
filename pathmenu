@@ -53,10 +53,17 @@ browse ()
         #                  directory, analogous to ‘cd’ with no
         #                  argument -- see cd(1).
         case ${target:-~/} in
+            -)     ( cd - >/dev/null 2>&1 && browse "$@" ) ;;
             .)     printf '%s\n' "${PWD%/}" ;;
             ./)    printf '%s\n' "${PWD%/}"/ ;;
             ..)    printf '%s\n' "${PWD%/?*}" ;;
-            */|-)  ( cd -P "$target" >/dev/null 2>&1 && browse "$@" ) ;;
+            */)    if [ -d "$target" ]
+                   then
+                       ( cd -P "$target" >/dev/null 2>&1 && browse "$@" )
+                   else
+                       printf '%s\n' "${PWD%/}/${target#./}/"
+                   fi
+                   ;;
             *)     printf '%s\n' "${PWD%/}/${target#./}"
         esac
     done
