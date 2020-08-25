@@ -53,11 +53,11 @@ browse ()
         #                  directory, analogous to ‘cd’ with no
         #                  argument -- see cd(1).
         case ${target:=~/} in
-            -)   ( cd - >/dev/null 2>&1 && browse "$@" ) ;;
+            -)   ( cd $cd_opt - >/dev/null 2>&1 && browse "$@" ) ;;
             .)   printf '%s\n' "${PWD%/}" ;;
             ./)  printf '%s\n' "${PWD%/}"/ ;;
             ..)  printf '%s\n' "${PWD%/?*}" ;;
-            */)  ( if [ -d "$target" ] && cd -P "$target" >/dev/null 2>&1
+            */)  ( if [ -d "$target" ] && cd $cd_opt "$target" >/dev/null 2>&1
                    then browse "$@"
                    else printf '%s\n' "${PWD%/}/${target#./}"
                    fi
@@ -74,6 +74,7 @@ do
         -A) A=A ;;
         -d) d=d ;;
         -F) append_slashes=true ;;
+        -P) cd_opt=$1 ;;
         *) break ;;
     esac
     shift
