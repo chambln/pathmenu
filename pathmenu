@@ -17,12 +17,17 @@ browse ()
         [ -d "$match" ] && match=$match/
 
         case $match in
-            # Skip file names that contain a new line character.
+            # Skip file names that contain a new line character, because
+            # we are using the new line character as a delimiter for piping
+            # file names into dmenu(1).
             *"$newline"*) continue ;;
 
-            # Protect ‘$match/’ from cd(1) options parsing by keeping
-            # the ‘./’ prefix.
-            ./-*/) printf '%s\n' "$match" ;;
+            # Protect certain matches from cd(1) options parsing by
+            # keeping their ‘./’ prefixes.  POSIX specifies -L and
+            # -P, but implementations may provide additional options,
+            # so we protect all file names that begin with a hyphen just
+            # to be extra safe.
+            ./-*) printf '%s\n' "$match" ;;
 
             # For other matches, ‘$match’ and ‘./$match’ are
             # almost certainly equivalent, so we can safely remove the
@@ -41,14 +46,25 @@ browse ()
         esac
     done | dmenu -p "$PWD" "$@" | while IFS= read -r target
     do
-        case $target in
-        */|-)
-            # Recursive case: Descend into $target and browse.
-            ( cd -P "$target" >/dev/null 2>&1 && browse "$@" )
-            ;;
-        *)
-            # Base case.
-            printf '%s\n' "$PWD/${target#./}"
+        # Strip URI prefix ‘file://’.
+        [ "${target##file://*}" ] && target=${target#file://}
+
+        # Ensure that files have no trailing slashes, and directories have
+        # exactly one trailing slash.
+        #   • ‘${target##*[^/]}’:            copy of all trailing slashes;
+        #   • ‘${target%${target##*[^/]}}’:  removes that suffix.
+        target=${target%${target##*[^/]}}
+        [ -d "$target" ] && target=$target/
+
+        # ‘${target:-~/}:’ Empty selection refers to the home
+        #                  directory, analogous to ‘cd’ with no
+        #                  argument -- see cd(1).
+        case ${target:-~/} in
+            .)     printf '%s\n' "${PWD%/}" ;;
+            ./)    printf '%s\n' "${PWD%/}"/ ;;
+            ..)    printf '%s\n' "${PWD%/?*}" ;;
+            */|-)  ( cd -P "$target" >/dev/null 2>&1 && browse "$@" ) ;;
+            *)     printf '%s\n' "${PWD%/}/$target"
         esac
     done
 }
