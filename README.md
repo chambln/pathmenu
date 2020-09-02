@@ -1,5 +1,7 @@
 # pathmenu
 
+[![builds.sr.ht status](https://builds.sr.ht/~chambln/pathmenu.svg)](https://builds.sr.ht/~chambln/pathmenu?)
+
 pathmenu is a purely POSIX and shellcheck-verified shell script for
 using dmenu to browse the filesystem and select files.  It could be used
 as part of a larger program or interactively in the shell.
