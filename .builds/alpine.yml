@@ -1,0 +1,7 @@
+image: alpine/edge
+packages:
+  - shellcheck
+tasks:
+  - lint: |
+      cd pathmenu
+      shellcheck -s sh pathmenu dicemenu
