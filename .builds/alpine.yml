@@ -1,7 +1,13 @@
 image: alpine/edge
 packages:
   - shellcheck
+secrets:
+  - 36227964-88fc-496f-935a-4d3953cb29d6
 tasks:
+  - mirror: |
+      cd pathmenu
+      ssh-keyscan github.com >> ~/.ssh/known_hosts
+      git push --quiet --mirror git@github.com:chambln/pathmenu
   - lint: |
       cd pathmenu
       shellcheck -s sh pathmenu dicemenu
