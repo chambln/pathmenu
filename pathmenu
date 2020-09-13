@@ -44,7 +44,7 @@ browse ()
             # ‘$match’ necessarily means ‘./$match’.
             *) printf '%s\n' "${match#./}"
         esac
-    done | dmenu -p "$PWD" "$@" | while IFS= read -r target
+    done | dmenu -p "$PWD"/ "$@" | while IFS= read -r target
     do
         # Strip URI prefix ‘file://’.
         [ "${target##file://*}" ] && target=${target#file://}
