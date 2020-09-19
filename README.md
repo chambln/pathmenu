@@ -10,8 +10,16 @@ as part of a larger program or interactively in the shell.
 
  - [**dmenu**(1)](https://tools.suckless.org/dmenu/)
 
-It would be very simple to edit pathmenu and swap out dmenu for something
-else like **rofi**(1), **fzf**(1) or even **vipe**(1) from moreutils.
+It is very easy to edit pathmenu and swap out dmenu for something else
+like **rofi**(1), **fzf**(1), even **vipe**(1) from moreutils, or any
+other program that can behave as a linewise filter.
+
+``` diff
+-    done | dmenu -p "$PWD"/ "$@" | while IFS= read -r target
++    done | fzf --prompt "$PWD/ " "$@" | while IFS= read -r target
+```
+
+When using **dmenu**(1), non-existent files can be ‘selected’ using shift + enter.
 
 # Installation
 
