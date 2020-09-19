@@ -12,14 +12,15 @@ as part of a larger program or interactively in the shell.
 
 It is very easy to edit pathmenu and swap out dmenu for something else
 like **rofi**(1), **fzf**(1), even **vipe**(1) from moreutils, or any
-other program that can behave as a linewise filter.
+other program that can behave as a linewise filter.  Example patch:
 
 ``` diff
 -    done | dmenu -p "$PWD"/ "$@" | while IFS= read -r target
 +    done | fzf --prompt "$PWD/ " "$@" | while IFS= read -r target
 ```
 
-When using **dmenu**(1), non-existent files can be ‘selected’ using shift + enter.
+When using **dmenu**(1), non-existent files can be ‘selected’ using
+<kbd>Shift</kbd> + <kbd>Enter</kbd>.
 
 # Installation
 
