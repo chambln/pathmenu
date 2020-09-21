@@ -2,7 +2,7 @@ image: alpine/edge
 packages:
   - shellcheck
 secrets:
-  - 36227964-88fc-496f-935a-4d3953cb29d6
+  - 749bcab5-e820-4f38-b247-d829d721f821
 tasks:
   - mirror: |
       cd pathmenu
