@@ -10,4 +10,4 @@ tasks:
       git push --quiet --mirror git@github.com:chambln/pathmenu
   - lint: |
       cd pathmenu
-      shellcheck -s sh pathmenu dicemenu
+      shellcheck -s sh pathmenu contrib/dicemenu
