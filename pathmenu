@@ -85,7 +85,7 @@ done
 case $A$a$d in
     ---) patterns='./*' ;;
     A--) patterns='./.[^.]* ./..?* ./*' ;;
-    -a-) patterns='./. ./.. ./.[^.]* ./*' ;;
+    -a-) patterns='./.* ./*' ;;
     Aa-) patterns='./. ./.. ./*' ;;
     --d) patterns='./*/' ;;
     A-d) patterns='./.[^.]*/ ./..?*/ ./*/' ;;
