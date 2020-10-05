@@ -43,7 +43,7 @@ browse ()
             # ‘$match’ necessarily means ‘./$match’.
             *) printf '%s\n' "${match#./}"
         esac
-    done | dmenu -p "$PWD"/ "$@" | while IFS= read -r target
+    done | eval "$dmenu" | while IFS= read -r target
     do
         # Strip ‘file://’ prefix -- useful for pasting in URIs.
         [ "${target##file://*}" ] && target=${target#file://}
@@ -68,13 +68,17 @@ browse ()
 
 A=- a=- d=-
 append_slashes=false
+dmenu='dmenu -p "$PWD"/'
 while :; do
     case $1 in
         -A) A=A ;;
         -F) append_slashes=true ;;
         -P) cd_opt=$1 ;;
         -a) a=a ;;
+        -c) dmenu=$2; shift ;;
         -d) d=d ;;
+        --) shift; break ;;
+        -*) printf 'No such option ‘%s’\n' "$1" >&2; exit 2 ;;
         *) break ;;
     esac
     shift
@@ -91,4 +95,4 @@ case $A$a$d in
     Aad) patterns='./. ./.. ./*/' ;;
 esac
 
-browse "$@"
+browse

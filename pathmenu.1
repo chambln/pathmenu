@@ -6,8 +6,10 @@
 pathmenu \- browse and select files with dmenu
 .SH SYNOPSIS
 .B pathmenu
-.BR "" [ \-A | \-F | \-P | \-a | \-d ]
-.IR "" [ "options for dmenu" ]
+.RB [ \-A | \-F | \-P | \-a | \-d ]
+.RB [ -c
+.IR command ]
+.RB [ -- ]
 .SH DESCRIPTION
 .PP
 .B pathmenu
@@ -41,6 +43,16 @@ When combined with \-A show only
 visible files,
 \[oq].\[cq] and
 \[oq]..\[cq].
+.TP
+.BI -c command
+Use
+.I command
+as the dynamic menu command instead of the default
+which is \[oq]\f[C]dmenu -p "$PWD"/\f[R]\[cq].
+.IP
+.B Warning:
+This command is reinterpretted by the shell using eval(1),
+so it possible to execute arbitrary code this way.
 .TP
 .B \-d
 Show only directories.  Combines predictably with
