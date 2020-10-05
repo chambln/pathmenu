@@ -68,7 +68,10 @@ browse ()
 
 A=- a=- d=-
 append_slashes=false
+
+# shellcheck disable=SC2016
 dmenu='dmenu -p "$PWD"/'
+
 while :; do
     case $1 in
         -A) A=A ;;
@@ -78,7 +81,7 @@ while :; do
         -c) dmenu=$2; shift ;;
         -d) d=d ;;
         --) shift; break ;;
-        -*) printf 'No such option ‘%s’\n' "$1" >&2; exit 2 ;;
+        -*) printf 'No such option: %s\n' "$1" >&2; exit 2 ;;
         *) break ;;
     esac
     shift
