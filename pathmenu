@@ -3,24 +3,23 @@
 # Copyright (c) 2020 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
 
-newline='
+NEWLINE='
 '
 
 browse ()
 {
-    for match in $patterns
-    do
+    for match in $patterns; do
         # Skip unexpanded patterns.
         [ -e "$match" ] || continue
 
-        # Append a forward slash to directories.
+        # Append a forward slash to directories if required.
         $append_slashes && [ -d "$match" ] && match=${match%/}/
 
         case $match in
             # Skip file names that contain a new line character, because
             # we are using the new line character as a delimiter for piping
             # file names into dmenu(1).
-            *"$newline"*) continue ;;
+            *"$NEWLINE"*) continue ;;
 
             # Protect certain matches from cd(1) options parsing by
             # keeping their ‘./’ prefixes.  POSIX specifies -L and
@@ -46,7 +45,7 @@ browse ()
         esac
     done | dmenu -p "$PWD"/ "$@" | while IFS= read -r target
     do
-        # Strip URI prefix ‘file://’.
+        # Strip ‘file://’ prefix -- useful for pasting in URIs.
         [ "${target##file://*}" ] && target=${target#file://}
 
         # ‘${target:=~/}’: Empty selection refers to the home
@@ -69,8 +68,7 @@ browse ()
 
 A=- a=- d=-
 append_slashes=false
-while true
-do
+while :; do
     case $1 in
         -A) A=A ;;
         -F) append_slashes=true ;;
