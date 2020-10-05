@@ -1,5 +1,5 @@
 # pathmenu and dicemenu
-# Copyright (c) 2019 Gregory L. Chamberlain
+# Copyright (c) 2019-2020 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
 
 PREFIX = /usr/local
