@@ -14,7 +14,7 @@ browse ()
         [ -e "$match" ] || continue
 
         # Append a forward slash to directories.
-        ${append_slashes-false} && [ -d "$match" ] && match=${match%/}/
+        $append_slashes && [ -d "$match" ] && match=${match%/}/
 
         case $match in
             # Skip file names that contain a new line character, because
@@ -67,6 +67,8 @@ browse ()
     done
 }
 
+A=- a=- d=-
+append_slashes=false
 while true
 do
     case $1 in
@@ -80,7 +82,7 @@ do
     shift
 done
 
-case ${A:--}${a:--}${d:--} in
+case $A$a$d in
     ---) patterns='./*' ;;
     A--) patterns='./.[^.]* ./..?* ./*' ;;
     -a-) patterns='./. ./.. ./.[^.]* ./*' ;;
