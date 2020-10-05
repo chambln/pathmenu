@@ -1,5 +1,5 @@
 .\" pathmenu
-.\" Copyright (c) 2019 Gregory L. Chamberlain
+.\" Copyright (c) 2019-2020 Gregory L. Chamberlain
 .\" Available under the MIT License -- see LICENSE file.
 .TH "PATHMENU" "1" "August 2020"
 .SH NAME
@@ -13,52 +13,58 @@ pathmenu \- browse and select files with dmenu
 .SH DESCRIPTION
 .PP
 .B pathmenu
-allows the user to browse the filesystem
-and select files
-using
-.BR dmenu (1).
-Selected file paths are written one per line to standard output.
+allows the user to browse the filesystem and select files using
+.BR dmenu (1)
+or a suitable replacement (see
+.BR \-c ).
+Selected file paths are written to standard output in absolute form and
+one per line.
+.PP
+For some programs such as
+.BR rsync (1),
+the presence of a forward slash immediately following the name of
+a directory can be meaningful and affect program behaviour.
+With the exception of \f[C]./\f[R], directories selected in pathmenu are
+printed without the trailing slash; so, the only way to have pathmenu
+include the trailing slash is by descending into the desired directory
+and selecting \f[C]./\f[R].
 .SH OPTIONS
 .TP
 .B \-A
-Show hidden files except \[oq].\[cq] and \[oq]..\[cq].
-See also
-.BR \-a .
+Show all hidden files except \f[C].\f[R] and \f[C]..\f[R].
+.IP
+Combined with
+.B \-a
+the effect is inverted so that
+\f[C].\f[R] and
+\f[C]..\f[R]
+are the only hidden files shown.
 .TP
 .B \-F
-Append forward slashes to directories, analogous to the
-.B \-p
-option for
-.BR ls (1).
+Append a forward slash to each directory name.
 .TP
 .B \-P
 Resolve symbolic links when changing directories.
-See
+See the same option in
 .BR cd (1).
 .TP
 .B \-a
 Show hidden files.
-.IP
-When combined with \-A show only
-visible files,
-\[oq].\[cq] and
-\[oq]..\[cq].
+(See also
+.BR \-A .)
 .TP
-.BI -c command
+.BI "-c " command
 Use
 .I command
 as the dynamic menu command instead of the default
-which is \[oq]\f[C]dmenu -p "$PWD"/\f[R]\[cq].
+which is \f[C]dmenu -p "$PWD"/\f[R].
 .IP
 .B Warning:
 This command is reinterpretted by the shell using eval(1),
-so it possible to execute arbitrary code this way.
+so it is possible to execute arbitrary code this way.
 .TP
 .B \-d
-Show only directories.  Combines predictably with
-.B \-A
-and
-.BR \-a .
+Show only directories.
 .SH BUGS
 .PP
 File names are piped into
@@ -77,4 +83,3 @@ Gregory Chamberlain <greg\[at]cosine.blue>.
 .BR dmenu (1)
 .BR fzf (1),
 .BR rofi (1)
-
