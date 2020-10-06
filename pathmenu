@@ -51,13 +51,12 @@ browse ()
         # ‘${target:=~/}’: Empty selection refers to the home
         #                  directory, analogous to ‘cd’ with no
         #                  argument -- see cd(1).
-        # shellcheck disable=SC2086
         case ${target:=~/} in
-            -)   ( cd $cd_opt - >/dev/null 2>&1 && browse "$@" ) ;;
+            -)   ( cd - >/dev/null 2>&1 && browse "$@" ) ;;
             .)   printf '%s\n' "${PWD%/}" ;;
             ./)  printf '%s\n' "${PWD%/}"/ ;;
             ..)  printf '%s\n' "${PWD%/?*}" ;;
-            */)  ( if [ -d "$target" ] && cd $cd_opt "$target" >/dev/null 2>&1
+            */)  ( if [ -d "$target" ] && cd "$target" >/dev/null 2>&1
                    then browse "$@"
                    else printf '%s\n' "${PWD%/}/${target#./}"
                    fi ) ;;
@@ -77,7 +76,7 @@ while :; do
     case $1 in
         -A) A=A ;;
         -F) append_slashes=true ;;
-        -P) cd_opt=$1 ;;
+        -P) alias cd='cd -P';;
         -a) a=a ;;
         -c) dmenu=$2; shift ;;
         -d) d=d ;;
