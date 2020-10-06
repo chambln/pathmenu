@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# shellcheck disable=SC2016
+pathmenu -AaFc'dmenu -i \
+                     -l 12 \
+                     -p "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"'

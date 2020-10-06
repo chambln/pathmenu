@@ -1,22 +1,24 @@
-# pathmenu and dicemenu
+# pathmenu
 # Copyright (c) 2019-2020 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
 
+PROGRAM = pathmenu
 PREFIX = /usr/local
 BIN = $(PREFIX)/bin
-MAN = $(PREFIX)/share/man/man1
+DOC = $(PREFIX)/share/doc
+MAN = $(PREFIX)/share/man
 
-all: pathmenu examples/dicemenu
-	chmod +x $^
+all: $(PROGRAM)
+	chmod +x pathmenu
 
-install: pathmenu pathmenu.1 examples/dicemenu examples/dicemenu.1
-	mkdir -p $(BIN) $(MAN)
-	cp -f pathmenu examples/dicemenu $(BIN)
-	cp -f pathmenu.1 examples/dicemenu.1 $(MAN)
+install: $(PROGRAM) $(PROGRAM).1 examples
+	mkdir -p $(BIN) $(MAN)/man1 $(DOC)/examples
+	cp -f $(PROGRAM) $(BIN)
+	cp -f $(PROGRAM).1 $(MAN)/man1
+	cp -f examples/* $(DOC)/examples
 
 uninstall:
-	rm -f $(BIN)/pathmenu $(MAN)/pathmenu.1
-	rm -f $(BIN)/dicemenu $(MAN)/dicemenu.1
+	rm -f $(BIN)/$(PROGRAM) $(MAN)/$(PROGRAM).1
 
 test: all
-	shellcheck pathmenu examples/dicemenu
+	shellcheck $(PROGRAM)

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# shellcheck disable=SC2016
+pathmenu -AaFc'fzf --preview "head -n\$LINES {}" \
+                   --prompt "${OLDPWD#$PWD/}/${PWD#$OLDPWD/}"'
