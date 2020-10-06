@@ -66,26 +66,22 @@ browse ()
     done
 }
 
-A=- a=- d=-
-append_slashes=false
-
 # shellcheck disable=SC2016
-dmenu='dmenu -p "$PWD"/'
+A=- a=- d=- append_slashes=false dmenu='dmenu -p "$PWD"/'
 
-while :; do
-    case $1 in
-        -A) A=A ;;
-        -F) append_slashes=true ;;
-        -P) cd(){ command cd -P "$@"; };;
-        -a) a=a ;;
-        -c) dmenu=$2; shift ;;
-        -d) d=d ;;
-        --) shift; break ;;
-        -*) printf 'No such option: %s\n' "$1" >&2; exit 2 ;;
-        *) break ;;
+while getopts AFPac:dh OPT; do
+    case $OPT in
+        A) A=A ;;
+        F) append_slashes=true ;;
+        P) cd() { command cd -P "$@"; } ;;
+        a) a=a ;;
+        c) dmenu=$OPTARG ;;
+        d) d=d ;;
+        ?) printf "No such option: ‘%s’" "$OPT" >&2
+           exit 2
     esac
-    shift
 done
+shift $((OPTIND - 1))
 
 case $A$a$d in
     ---) patterns='./*' ;;
