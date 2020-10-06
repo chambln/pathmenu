@@ -48,10 +48,10 @@ browse ()
         # Strip ‘file://’ prefix -- useful for pasting in URIs.
         [ "${target##file://*}" ] && target=${target#file://}
 
-        # ‘${target:=~/}’: Empty selection refers to the home
-        #                  directory, analogous to ‘cd’ with no
-        #                  argument -- see cd(1).
-        case ${target:=~/} in
+        # ‘${target:=$ORIGPWD/}’:
+        #     Empty selection refers to the starting directory (ORIGPWD),
+        #     analogous to ‘cd’ with no argument -- see cd(1).
+        case ${target:=$ORIGPWD/} in
             -)   ( cd - >/dev/null 2>&1 && browse "$@" ) ;;
             .)   printf '%s\n' "${PWD%/}" ;;
             ./)  printf '%s\n' "${PWD%/}"/ ;;
@@ -94,4 +94,4 @@ case $A$a$d in
     Aad) patterns='./. ./.. ./*/' ;;
 esac
 
-browse
+ORIGPWD=$PWD browse "$@"
