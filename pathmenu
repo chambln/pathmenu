@@ -76,7 +76,7 @@ while :; do
     case $1 in
         -A) A=A ;;
         -F) append_slashes=true ;;
-        -P) alias cd='cd -P';;
+        -P) cd(){ command cd -P "$@"; };;
         -a) a=a ;;
         -c) dmenu=$2; shift ;;
         -d) d=d ;;
