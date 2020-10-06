@@ -21,5 +21,5 @@ install: $(PROGRAM) $(PROGRAM).1 examples
 uninstall:
 	rm -f $(BIN)/$(PROGRAM) $(MAN)/$(PROGRAM).1
 
-test: all
+lint: all
 	shellcheck $(PROGRAM) $(EXAMPLES)
