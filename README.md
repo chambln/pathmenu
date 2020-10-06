@@ -26,3 +26,7 @@ See **pathmenu**(1).
 
 **Hint:** When using **dmenu**(1), non-existent files can be ‘selected’
 using <kbd>Shift</kbd> + <kbd>Enter</kbd>.
+
+# To-do
+
+- [ ] Reimplement dicemenu in safe POSIX sh
