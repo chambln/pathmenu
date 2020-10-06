@@ -26,7 +26,7 @@ browse ()
             # -P, but implementations may provide additional options,
             # so we protect all file names that begin with a hyphen just
             # to be extra safe.
-            ./-*) printf '%s\n' "$match" ;;
+            ./[-~]*) printf '%s\n' "$match" ;;
 
             # For other matches, ‘$match’ and ‘./$match’ are
             # almost certainly equivalent, so we can safely remove the
@@ -47,6 +47,9 @@ browse ()
     do
         # Strip ‘file://’ prefix -- useful for pasting in URIs.
         [ "${target##file://*}" ] && target=${target#file://}
+
+        # Special case for ‘~’ meaning the home directory.
+        case $target in \~|\~/) target=$HOME/; esac
 
         # ‘${target:=$ORIGPWD/}’:
         #     Empty selection refers to the starting directory (ORIGPWD),
