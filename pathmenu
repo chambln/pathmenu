@@ -90,11 +90,11 @@ case $A$a$d in
     ---) patterns='./*' ;;
     A--) patterns='./.[^.]* ./..?* ./*' ;;
     -a-) patterns='./.* ./*' ;;
-    Aa-) patterns='./. ./.. ./*' ;;
+    Aa-) patterns='./.. ./. ./*' ;;
     --d) patterns='./*/' ;;
     A-d) patterns='./.[^.]*/ ./..?*/ ./*/' ;;
-    -ad) patterns='./. ./.. ./.[^.]*/ ./*/' ;;
-    Aad) patterns='./. ./.. ./*/' ;;
+    -ad) patterns='./.. ./. ./.[^.]*/ ./*/' ;;
+    Aad) patterns='./.. ./. ./*/' ;;
 esac
 
 ORIGPWD=$PWD browse "$@"
