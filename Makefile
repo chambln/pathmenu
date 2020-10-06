@@ -6,17 +6,17 @@ PREFIX = /usr/local
 BIN = $(PREFIX)/bin
 MAN = $(PREFIX)/share/man/man1
 
-all: pathmenu contrib/dicemenu
+all: pathmenu examples/dicemenu
 	chmod +x $^
 
-install: pathmenu pathmenu.1 contrib/dicemenu contrib/dicemenu.1
+install: pathmenu pathmenu.1 examples/dicemenu examples/dicemenu.1
 	mkdir -p $(BIN) $(MAN)
-	cp -f pathmenu contrib/dicemenu $(BIN)
-	cp -f pathmenu.1 contrib/dicemenu.1 $(MAN)
+	cp -f pathmenu examples/dicemenu $(BIN)
+	cp -f pathmenu.1 examples/dicemenu.1 $(MAN)
 
 uninstall:
 	rm -f $(BIN)/pathmenu $(MAN)/pathmenu.1
 	rm -f $(BIN)/dicemenu $(MAN)/dicemenu.1
 
-test: pathmenu contrib/dicemenu
-	shellcheck -s sh $^
+test: all
+	shellcheck pathmenu examples/dicemenu

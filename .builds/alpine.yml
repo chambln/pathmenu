@@ -8,6 +8,6 @@ tasks:
       cd pathmenu
       ssh-keyscan github.com >> ~/.ssh/known_hosts
       git push --quiet --mirror git@github.com:chambln/pathmenu
-  - lint: |
+  - test: |
       cd pathmenu
-      shellcheck -s sh pathmenu contrib/dicemenu
+      make test
