@@ -7,9 +7,10 @@ PREFIX = /usr/local
 BIN = $(PREFIX)/bin
 DOC = $(PREFIX)/share/doc
 MAN = $(PREFIX)/share/man
+EXAMPLES = examples/dmenup examples/fzfp examples/dicemenu
 
-all: $(PROGRAM)
-	chmod +x pathmenu
+all: $(PROGRAM) $(EXAMPLES)
+	chmod +x $^
 
 install: $(PROGRAM) $(PROGRAM).1 examples
 	mkdir -p $(BIN) $(MAN)/man1 $(DOC)/examples
@@ -21,4 +22,4 @@ uninstall:
 	rm -f $(BIN)/$(PROGRAM) $(MAN)/$(PROGRAM).1
 
 test: all
-	shellcheck $(PROGRAM)
+	shellcheck $(PROGRAM) $(EXAMPLES)
