@@ -1,28 +1,21 @@
 # pathmenu
 
-[![builds.sr.ht status](https://builds.sr.ht/~chambln/pathmenu.svg)](https://builds.sr.ht/~chambln/pathmenu?)
+[![builds.sr.ht status](https://builds.sr.ht/~chambln/pathmenu.svg)](https://builds.sr.ht/~chambln/pathmenu)
 
-pathmenu is a purely POSIX and shellcheck-verified shell script for
-using dmenu to browse the filesystem and select files.  It could be used
-as part of a larger program or interactively in the shell.
+pathmenu is a purely POSIX shell script that allows
+the user to browse the filesystem and select files with
+[**dmenu**(1)](https://tools.suckless.org/dmenu/).
 
-# Dependencies
-
- - [**dmenu**(1)](https://tools.suckless.org/dmenu/)
-
-Using the <code>-c *command*</code> option it is very easy to replace
-dmenu with something else like **rofi**(1) or **fzf**(1) or any other
-program that can behave as a linewise filter.  Example:
+As in the example below, the <code>-c *command*</code> option makes
+it possible to use something else like **fzf**(1) or **rofi**(1) as a
+drop-in replacement for dmenu.
 
     pathmenu -c 'fzf --prompt "$PWD/ "'
-
-When using **dmenu**(1), non-existent files can be ‘selected’ using
-<kbd>Shift</kbd> + <kbd>Enter</kbd>.
 
 # Installation
 
     make install
-    
+
 Optionally specify a prefix; for example:
 
     make PREFIX=~/.local install
@@ -30,3 +23,6 @@ Optionally specify a prefix; for example:
 # Usage
 
 See **pathmenu**(1).
+
+**Hint:** When using **dmenu**(1), non-existent files can be ‘selected’
+using <kbd>Shift</kbd> + <kbd>Enter</kbd>.
