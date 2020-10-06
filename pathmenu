@@ -61,6 +61,7 @@ browse ()
                    then browse "$@"
                    else printf '%s\n' "${PWD%/}/${target#./}"
                    fi ) ;;
+            /*)  printf '%s\n' "$target" ;;
             *)   printf '%s\n' "${PWD%/}/${target#./}"
         esac
     done
