@@ -32,7 +32,7 @@ browse() (
             #
             # We also protect ‘~’ since this has special meaning as
             # a shortcut later on.  So if there really is a file called
-            # ‘~’ then it will be listed as ‘./~’ to prevent is
+            # ‘~’ then it will be listed as ‘./~’ to prevent it
             # being interpretted as a shortcut.
             ./[-~]*) printf '%s\n' "$match" ;;
 
