@@ -82,7 +82,7 @@ while getopts AFPac:dh OPT; do
         a) a=a ;;
         c) dmenu=$OPTARG ;;
         d) d=d ;;
-        ?) printf "No such option: ‘%s’" "$OPT" >&2
+        ?) printf 'No such option: %s\n' "$OPT" >&2
            exit 2
     esac
 done
