@@ -25,7 +25,7 @@ Optionally specify a prefix; for example:
 See **pathmenu**(1).
 
 **Hint:** When using **dmenu**(1), non-existent files can be ‘selected’
-using <kbd>Shift</kbd> + <kbd>Enter</kbd>.
+using <kbd>Shift</kbd> + <kbd>Return</kbd>.
 
 # To-do
 

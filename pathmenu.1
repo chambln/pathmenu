@@ -43,10 +43,17 @@ are printed without the trailing slash; so, the only way to have
 .B pathmenu
 include the trailing slash is by descending into the desired directory
 and entering \f[C].\f[R] or \f[C]./\f[R].
+.PP
+The empty selection will cause pathmenu to return to the directory in
+which it began.
+.PP
+To make a selection which is not among the list of suggestions,
+it may be necessary to hit Shift + Return in
+.BR dmenu (1).
 .SH OPTIONS
 .TP
 .B \-A
-Show all hidden files except dot (\f[C].\f[R]) and dot\-dot (\f[C]..\f[R]).
+Show all hidden files except dot (\f[C].\f[R]) and dot-dot (\f[C]..\f[R]).
 .IP
 Combined with
 .B \-a
