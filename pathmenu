@@ -55,14 +55,10 @@ browse ()
         #     Empty selection refers to the starting directory (ORIGPWD),
         #     analogous to ‘cd’ with no argument -- see cd(1).
         case ${target:=$ORIGPWD/} in
-            -)   ( cd - >/dev/null 2>&1 && browse "$@" ) ;;
             .)   printf '%s\n' "${PWD%/}" ;;
             ./)  printf '%s\n' "${PWD%/}"/ ;;
             ..)  printf '%s\n' "${PWD%/?*}" ;;
-            */)  ( if [ -d "$target" ] && cd "$target" >/dev/null 2>&1
-                   then browse "$@"
-                   else printf '%s\n' "${PWD%/}/${target#./}"
-                   fi ) ;;
+            */|-) ( cd "$target" >/dev/null && browse "$@" ) ;;
             /*)  printf '%s\n' "$target" ;;
             *)   printf '%s\n' "${PWD%/}/${target#./}"
         esac
