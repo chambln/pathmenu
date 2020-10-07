@@ -72,7 +72,7 @@ browse() (
 
 # shellcheck disable=SC2016
 A=- a=- d=- append_slashes=false dmenu='dmenu -p "$PWD"/'
-
+USAGE="Usage: ${0##*/} [-AFPadh] [-c COMMAND]"
 while getopts AFPac:dh OPT; do
     case $OPT in
         A) A=A ;;
@@ -81,8 +81,8 @@ while getopts AFPac:dh OPT; do
         a) a=a ;;
         c) dmenu=$OPTARG ;;
         d) d=d ;;
-        ?) printf 'No such option: %s\n' "$OPT" >&2
-           exit 2
+        h) printf '%s\n' "$USAGE"; exit ;;
+        ?) printf '%s\n' "$USAGE" >&2; exit 2 ;;
     esac
 done
 shift $((OPTIND - 1))
