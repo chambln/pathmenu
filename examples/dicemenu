@@ -58,6 +58,6 @@ dice() {
 while :; do
     IFS='
 '
-    sels="$(pathmenu -i -l 20 "$@")"
+    sels="$(pathmenu "$@")"
     dice $sels || break
 done
