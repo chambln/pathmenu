@@ -12,8 +12,11 @@ browse() (
         # Skip unexpanded patterns.
         [ -e "$match" ] || continue
 
+        # Strip all trailing forward slashes.
+        match=${match%${match##*[^/]}}
+
         # Append a forward slash to directories if required.
-        $append_slashes && [ -d "$match" ] && match=${match%/}/
+        $append_slashes && [ -d "$match" ] && match=$match/
 
         case $match in
             # Skip file names that contain a new line character, because
