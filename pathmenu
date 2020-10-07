@@ -5,6 +5,7 @@
 
 NEWLINE='
 '
+ORIGPWD=$PWD
 
 browse ()
 {
@@ -26,6 +27,11 @@ browse ()
             # -P, but implementations may provide additional options,
             # so we protect all file names that begin with a hyphen just
             # to be extra safe.
+            #
+            # We also protect ‘~’ since this has special meaning as
+            # a shortcut later on.  So if there really is a file called
+            # ‘~’ then it will be listed as ‘./~’ to prevent is
+            # being interpretted as a shortcut.
             ./[-~]*) printf '%s\n' "$match" ;;
 
             # For other matches, ‘$match’ and ‘./$match’ are
@@ -93,4 +99,6 @@ case $A$a$d in
     Aad) patterns='./.. ./. ./*/' ;;
 esac
 
-ORIGPWD=$PWD browse "$@"
+for arg in "${@:-.}"
+do ( cd "$arg" && browse "$@" )
+done

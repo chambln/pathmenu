@@ -3,4 +3,5 @@
 # shellcheck disable=SC2016,SC1004
 pathmenu -AaFc'dmenu -i \
                      -l 12 \
-                     -p "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"'
+                     -p "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"' \
+         "$@"

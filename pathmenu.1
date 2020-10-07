@@ -7,30 +7,46 @@ pathmenu \- browse and select files with dmenu
 .SH SYNOPSIS
 .B pathmenu
 .RB [ \-AFPad ]
-.RB [ -c
+.RB [ \-c
 .IR command ]
+.RI [ directory ...]
 .SH DESCRIPTION
 .PP
 .B pathmenu
 allows the user to browse the filesystem and select files using
 .BR dmenu (1)
-or a suitable replacement (see
-.BR \-c ).
-Selected file paths are written to standard output in absolute form and
-one per line.
+or a suitable replacement.
+Selected file names are written one per line to standard output in
+absolute form.
+.PP
+.B pathmenu
+begins in
+.I directory
+or else the working directory
+.PP
+The empty selection will cause
+.B pathmenu to return to the directory in
+which it began.
+.PP
+To make a selection which is not among the list of suggestions,
+it may be necessary to hit Shift + Return in
+.BR dmenu (1).
 .PP
 For some programs such as
 .BR rsync (1),
 the presence of a forward slash immediately following the name of
 a directory can be meaningful and affect program behaviour.
-With the exception of \f[C]./\f[R], directories selected in pathmenu are
-printed without the trailing slash; so, the only way to have pathmenu
+With the exception of the working directory,
+directories selected in
+.B pathmenu
+are printed without the trailing slash; so, the only way to have
+.B pathmenu
 include the trailing slash is by descending into the desired directory
-and selecting \f[C]./\f[R].
+and entering \f[C].\f[R] or \f[C]./\f[R].
 .SH OPTIONS
 .TP
 .B \-A
-Show all hidden files except \f[C].\f[R] and \f[C]..\f[R].
+Show all hidden files except dot (\f[C].\f[R]) and dot\-dot (\f[C]..\f[R]).
 .IP
 Combined with
 .B \-a
@@ -52,14 +68,15 @@ Show hidden files.
 (See also
 .BR \-A .)
 .TP
-.BI "-c " command
+.BI "\-c " command
 Use
 .I command
 as the dynamic menu command instead of the default
-which is \f[C]dmenu -p "$PWD"/\f[R].
+which is \f[C]dmenu \-p "$PWD"/\f[R].
 .IP
 .B Warning:
-This command is reinterpretted by the shell using eval(1),
+This command is reinterpretted by the shell using
+.BR eval (1),
 so it is possible to execute arbitrary code this way.
 .TP
 .B \-d
