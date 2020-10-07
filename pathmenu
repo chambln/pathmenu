@@ -5,10 +5,9 @@
 
 NEWLINE='
 '
-ORIGPWD=$PWD
 
-browse ()
-{
+browse() (
+    cd "$1" >/dev/null || return 1
     for match in $patterns; do
         # Skip unexpanded patterns.
         [ -e "$match" ] || continue
@@ -64,12 +63,12 @@ browse ()
             .)   printf '%s\n' "${PWD%/}" ;;
             ./)  printf '%s\n' "${PWD%/}"/ ;;
             ..)  printf '%s\n' "${PWD%/?*}" ;;
-            */|-) ( cd "$target" >/dev/null && browse "$@" ) ;;
+            */|-)browse "$target" ;;
             /*)  printf '%s\n' "$target" ;;
             *)   printf '%s\n' "${PWD%/}/${target#./}"
         esac
     done
-}
+)
 
 # shellcheck disable=SC2016
 A=- a=- d=- append_slashes=false dmenu='dmenu -p "$PWD"/'
@@ -99,6 +98,7 @@ case $A$a$d in
     Aad) patterns='./.. ./. ./*/' ;;
 esac
 
-for arg in "${@:-.}"
-do ( cd "$arg" && browse "$@" )
+for directory in "${@:-$PWD}"; do
+    ORIGPWD=$directory
+    browse "$directory" || break
 done
