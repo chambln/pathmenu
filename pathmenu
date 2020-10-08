@@ -8,7 +8,7 @@ NEWLINE='
 
 browse() (
     cd "$1" >/dev/null || return 1
-    for match in $patterns; do
+    for match in $PATTERNS; do
         # Skip unexpanded patterns.
         [ -e "$match" ] || continue
 
@@ -16,7 +16,7 @@ browse() (
         match=${match%${match##*[^/]}}
 
         # Append a forward slash to directories if required.
-        $append_slashes && [ -d "$match" ] && match=$match/
+        $APPEND_SLASHES && [ -d "$match" ] && match=$match/
 
         case $match in
             # Skip file names that contain a new line character, because
@@ -51,7 +51,7 @@ browse() (
             # ‘$match’ necessarily means ‘./$match’.
             *) printf '%s\n' "${match#./}"
         esac
-    done | eval "$dmenu" | while IFS= read -r target
+    done | eval "$DMENU" | while IFS= read -r target
     do
         # Strip ‘file://’ prefix -- useful for pasting in URIs.
         [ "${target##file://*}" ] && target=${target#file://}
@@ -74,15 +74,15 @@ browse() (
 )
 
 # shellcheck disable=SC2016
-A=- a=- d=- append_slashes=false dmenu='dmenu -p "$PWD"/'
+A=- a=- d=- APPEND_SLASHES=false DMENU='dmenu -p "$PWD"/'
 USAGE="Usage: ${0##*/} [-AFPadh] [-c COMMAND]"
 while getopts AFPac:dh OPT; do
     case $OPT in
         A) A=A ;;
-        F) append_slashes=true ;;
+        F) APPEND_SLASHES=true ;;
         P) cd() { command cd -P "$@"; } ;;
         a) a=a ;;
-        c) dmenu=$OPTARG ;;
+        c) DMENU=$OPTARG ;;
         d) d=d ;;
         h) printf '%s\n' "$USAGE"; exit ;;
         ?) printf '%s\n' "$USAGE" >&2; exit 2 ;;
@@ -91,14 +91,14 @@ done
 shift $((OPTIND - 1))
 
 case $A$a$d in
-    ---) patterns='./*' ;;
-    A--) patterns='./.[^.]* ./..?* ./*' ;;
-    -a-) patterns='./.* ./*' ;;
-    Aa-) patterns='./.. ./. ./*' ;;
-    --d) patterns='./*/' ;;
-    A-d) patterns='./.[^.]*/ ./..?*/ ./*/' ;;
-    -ad) patterns='./.. ./. ./.[^.]*/ ./*/' ;;
-    Aad) patterns='./.. ./. ./*/' ;;
+    ---) PATTERNS='./*' ;;
+    A--) PATTERNS='./.[^.]* ./..?* ./*' ;;
+    -a-) PATTERNS='./.* ./*' ;;
+    Aa-) PATTERNS='./.. ./. ./*' ;;
+    --d) PATTERNS='./*/' ;;
+    A-d) PATTERNS='./.[^.]*/ ./..?*/ ./*/' ;;
+    -ad) PATTERNS='./.. ./. ./.[^.]*/ ./*/' ;;
+    Aad) PATTERNS='./.. ./. ./*/' ;;
 esac
 
 for directory in "${@:-$PWD}"; do
