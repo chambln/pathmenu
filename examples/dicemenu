@@ -33,17 +33,17 @@ dice() {
             [ "$polar" = yes ] && $prog -- "$@"
             ;;
         mv|mv[[:space:]]*)
-            last="$( pathmenu -i -l 20 -p "Move $# files to" | sed q )"
+            last="$( pathmenu "$@" -p "Move $# files to" | sed q )"
             [ -z "$last" ] && exit 1
             [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
             ;;
         cp|cp[[:space:]]*)
-            last="$( pathmenu -i -l 20 -p "Copy $# files to" | sed q )"
+            last="$( pathmenu "$@" -p "Copy $# files to" | sed q )"
             [ -z "$last" ] && exit 1
             [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
             ;;
         ln|ln[[:space:]]*)
-            last="$( pathmenu -i -l 20 -p "Link to $# files from" | sed q )"
+            last="$( pathmenu "$@" -p "Link to $# files from" | sed q )"
             [ -z "$last" ] && exit 1
             [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
             ;;
