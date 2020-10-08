@@ -5,12 +5,8 @@
 
 suggest() {
     for match do
-        shift
         # Skip unexpanded patterns.
         [ -e "$match" ] || continue
-
-        # Append a forward slash to directories if required.
-        $APPEND_SLASHES && [ -d "$match" ] && match=$match/
 
         case $match in
             # Skip file names that contain a new line character, because
@@ -25,43 +21,35 @@ suggest() {
             # For other matches, ‘$match’ and ‘./$match’ are
             # almost certainly equivalent, so we can safely omit the
             # ‘./’ prefix for the sake of readability.
-            *) printf '%s\n' "$match"
+            */) printf '%s\n' "$match" ;;
+
+            # Skip directory names for which we also matched "$match/".
+            *) case $IFS$*$IFS in
+                   *$IFS$match/$IFS*) ;;
+                   *) printf '%s\n' "$match"
+               esac
         esac
     done
 }
 
 # shellcheck disable=SC2016
-A=- a=- d=- APPEND_SLASHES=false DMENU='dmenu -p "$PWD"/' IFS='
-' USAGE="Usage: ${0##*/} [-AFPadh] [-c COMMAND]"
-while getopts AFPac:dh OPT; do
+PATTERNS= DMENU='dmenu -p "$PWD"/' IFS='
+' USAGE="Usage: ${0##*/} [-Ph] [-c COMMAND] [-p PATTERN]..."
+while getopts Pc:hp: OPT; do
     case $OPT in
-        A) A=A ;;
-        F) APPEND_SLASHES=true ;;
         P) cd() { command cd -P "$@"; } ;;
-        a) a=a ;;
         c) DMENU=$OPTARG ;;
-        d) d=d ;;
         h) printf '%s\n' "$USAGE"; exit ;;
+        p) PATTERNS=$PATTERNS$IFS$OPTARG ;;
         ?) printf '%s\n' "$USAGE" >&2; exit 2 ;;
     esac
 done
 shift $((OPTIND - 1))
 
-case $A$a$d in
-    ---) PATTERNS='*' ;;
-    A--) PATTERNS=".[^.]*$IFS..?*$IFS*" ;;
-    -a-) PATTERNS=".*$IFS*" ;;
-    Aa-) PATTERNS="..$IFS.$IFS*" ;;
-    --d) PATTERNS='*/' ;;
-    A-d) PATTERNS=".[^.]*/$IFS..?*/$IFS*/" ;;
-    -ad) PATTERNS="..$IFS.$IFS.[^.]*/$IFS*/" ;;
-    Aad) PATTERNS="..$IFS.$IFS*/" ;;
-esac
-
 set -- "${1:-$PWD}"
 while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
     # shellcheck disable=SC2086
-    for f in $(suggest $PATTERNS | eval "$DMENU"); do
+    for f in $(suggest ${PATTERNS:-*}| eval "$DMENU"); do
         case $f in
             -|-/)  set -- "$@" "$OLDPWD"   ;;
             ~|\~/) set -- "$@" "$HOME"     ;;

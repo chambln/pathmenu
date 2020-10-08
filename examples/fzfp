@@ -1,6 +1,11 @@
 #!/bin/sh
 
 # shellcheck disable=SC2016,SC1004
-pathmenu -AaFc'fzf --preview "head -n\$LINES {}" \
-                   --prompt "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"' \
-         "$@"
+pathmenu \
+    -p '.*/' \
+    -p '.*' \
+    -p '*/' \
+    -p '*' \
+    -c'fzf --preview "head -n\$LINES {}" \
+        --prompt "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"' \
+    "$@"
