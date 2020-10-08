@@ -3,79 +3,36 @@
 # Copyright (c) 2020 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
 
-NEWLINE='
-'
-
-browse() (
-    cd "$1" >/dev/null || return 1
-    for match in $PATTERNS; do
+suggest() {
+    for match do
+        shift
         # Skip unexpanded patterns.
         [ -e "$match" ] || continue
-
-        # Strip all trailing forward slashes.
-        match=${match%${match##*[^/]}}
 
         # Append a forward slash to directories if required.
         $APPEND_SLASHES && [ -d "$match" ] && match=$match/
 
         case $match in
             # Skip file names that contain a new line character, because
-            # we are using the new line character as a delimiter for piping
-            # file names into dmenu(1).
-            *"$NEWLINE"*) continue ;;
+            # we are using the new line character as a delimiter for
+            # piping file names into dmenu(1).
+            *"$IFS"*) continue ;;
 
-            # Protect certain matches from cd(1) options parsing by
-            # keeping their ‘./’ prefixes.  POSIX specifies -L and
-            # -P, but implementations may provide additional options,
-            # so we protect all file names that begin with a hyphen just
-            # to be extra safe.
-            #
-            # We also protect ‘~’ since this has special meaning as
-            # a shortcut later on.  So if there really is a file called
-            # ‘~’ then it will be listed as ‘./~’ to prevent it
-            # being interpretted as a shortcut.
-            ./[-~]*) printf '%s\n' "$match" ;;
+            # Protect vulnerable file names by keeping their ‘./’
+            # prefixes.
+            ./[-~]*) printf '%s\n' ./"$match" ;;
 
             # For other matches, ‘$match’ and ‘./$match’ are
-            # almost certainly equivalent, so we can safely remove the
+            # almost certainly equivalent, so we can safely omit the
             # ‘./’ prefix for the sake of readability.
-            #
-            # The only exception I’m aware of is when ‘$match/’ exists
-            # in a CDPATH directory that is positioned _in front of_
-            # ‘.’, in which case perhaps the user intends to go
-            # there -- especially since their CDPATH is configured that
-            # way. See cd(1).
-            #
-            # My understanding is this:  With CDPATH unset or empty,
-            # or ‘CDPATH=.’, or ‘CDPATH=.:*’ where * is anything, then
-            # ‘$match’ necessarily means ‘./$match’.
-            *) printf '%s\n' "${match#./}"
-        esac
-    done | eval "$DMENU" | while IFS= read -r target
-    do
-        # Strip ‘file://’ prefix -- useful for pasting in URIs.
-        [ "${target##file://*}" ] && target=${target#file://}
-
-        # Special case for ‘~’ meaning the home directory.
-        case $target in \~|\~/) target=$HOME/; esac
-
-        # ‘${target:=$ORIGPWD/}’:
-        #     Empty selection refers to the starting directory (ORIGPWD),
-        #     analogous to ‘cd’ with no argument -- see cd(1).
-        case ${target:=$ORIGPWD/} in
-            .)   printf '%s\n' "${PWD%/}" ;;
-            ./)  printf '%s\n' "${PWD%/}"/ ;;
-            ..)  printf '%s\n' "${PWD%/?*}" ;;
-            */|-)browse "$target" ;;
-            /*)  printf '%s\n' "$target" ;;
-            *)   printf '%s\n' "${PWD%/}/${target#./}"
+            *) printf '%s\n' "$match"
         esac
     done
-)
+}
 
 # shellcheck disable=SC2016
-A=- a=- d=- APPEND_SLASHES=false DMENU='dmenu -p "$PWD"/'
-USAGE="Usage: ${0##*/} [-AFPadh] [-c COMMAND]"
+A=- a=- d=- APPEND_SLASHES=false DMENU='dmenu -p "$PWD"/' IFS='
+' USAGE="Usage: ${0##*/} [-AFPadh] [-c COMMAND]"
 while getopts AFPac:dh OPT; do
     case $OPT in
         A) A=A ;;
@@ -91,17 +48,30 @@ done
 shift $((OPTIND - 1))
 
 case $A$a$d in
-    ---) PATTERNS='./*' ;;
-    A--) PATTERNS='./.[^.]* ./..?* ./*' ;;
-    -a-) PATTERNS='./.* ./*' ;;
-    Aa-) PATTERNS='./.. ./. ./*' ;;
-    --d) PATTERNS='./*/' ;;
-    A-d) PATTERNS='./.[^.]*/ ./..?*/ ./*/' ;;
-    -ad) PATTERNS='./.. ./. ./.[^.]*/ ./*/' ;;
-    Aad) PATTERNS='./.. ./. ./*/' ;;
+    ---) PATTERNS='*' ;;
+    A--) PATTERNS=".[^.]*$IFS..?*$IFS*" ;;
+    -a-) PATTERNS=".*$IFS*" ;;
+    Aa-) PATTERNS="..$IFS.$IFS*" ;;
+    --d) PATTERNS='*/' ;;
+    A-d) PATTERNS=".[^.]*/$IFS..?*/$IFS*/" ;;
+    -ad) PATTERNS="..$IFS.$IFS.[^.]*/$IFS*/" ;;
+    Aad) PATTERNS="..$IFS.$IFS*/" ;;
 esac
 
-for directory in "${@:-$PWD}"; do
-    ORIGPWD=$directory
-    browse "$directory" || break
+set -- "${1:-$PWD}"
+while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
+    # shellcheck disable=SC2086
+    for f in $(suggest $PATTERNS | eval "$DMENU"); do
+        case $f in
+            -|-/)  set -- "$@" "$OLDPWD"   ;;
+            ~|\~/) set -- "$@" "$HOME"     ;;
+            ..)    set -- "$@" "${PWD%/*}" ;;
+            .)     printf '%s\n' "$PWD"    ;;
+            ./)    printf '%s\n' "$PWD/"   ;;
+            /*/)   set -- "$@" "$f"        ;;
+            */)    set -- "$@" "$PWD/$f"   ;;
+            /*)    printf '%s\n' "$f"      ;;
+            *)     printf '%s\n' "$PWD/$f" ;;
+        esac
+    done
 done
