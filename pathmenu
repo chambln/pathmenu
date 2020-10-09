@@ -3,7 +3,7 @@
 # Copyright (c) 2020 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
 
-suggest() {
+lsfile() {
     for match do
         test -"$TEST" "$match" || continue
 
@@ -49,7 +49,7 @@ shift $((OPTIND - 1))
 set -- "${1:-$PWD}"
 while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
     # shellcheck disable=SC2086
-    for f in $(set +f; suggest ${PATTERNS:-*}| eval "$DMENU"); do
+    for f in $(set +f; lsfile ${PATTERNS:-*}| eval "$DMENU"); do
         case $f in
             \~)   f=$HOME/ ;;
             \~/*) f=$HOME/${f#*/}
