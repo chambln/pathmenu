@@ -59,7 +59,8 @@ esac
 set -- "${1:-$PWD}"
 while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
     # shellcheck disable=SC2086
-    for f in $(set +f; lsfile ${PATTERNS:-*}| eval "$DMENU"); do
+    sels=$(set +f; lsfile ${PATTERNS:-*}| eval "$DMENU") || exit 1
+    for f in $sels; do
         case $f in
             \~)   f=$HOME/ ;;
             \~/*) f=$HOME/${f#*/}
