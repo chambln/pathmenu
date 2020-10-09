@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh -euf
 # dicemenu
 # Copyright (c) 2019 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
@@ -19,4 +19,6 @@ dice() {
         eval "$cmd"
 }
 
+# Word splitting is safe and intended here.
+# shellcheck disable=2046
 while dice $(pathmenu "$@"); do :; done
