@@ -7,5 +7,5 @@ pathmenu \
     -p '*/' \
     -p '*' \
     -c'fzf --preview "head -n\$LINES {}" \
-        --prompt "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"' \
+        --prompt "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"/' \
     "$@"
