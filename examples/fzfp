@@ -2,10 +2,12 @@
 
 # shellcheck disable=SC2016,SC1004
 pathmenu \
-    -p '.*/' \
-    -p '.*' \
-    -p '*/' \
-    -p '*' \
-    -c'fzf --preview "head -n\$LINES {}" \
-        --prompt "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"/' \
+    -AaF \
+    -c'fzf --preview "[ -d {} ] && ls {} || head -n\$LINES {}" \
+           --prompt="$(
+               case $PWD in
+                   ~|~/*) printf %s "~${PWD#~}" ;;
+                   *) printf "%s\n" "$PWD"
+               esac
+           )/"' \
     "$@"
