@@ -5,7 +5,7 @@
 
 suggest() {
     for match do
-        [ -"$TEST" "$match" ] || continue
+        test -"$TEST" "$match" || continue
 
         case $match in
             # Skip file names that contain a new line character, because
