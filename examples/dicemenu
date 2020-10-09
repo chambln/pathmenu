@@ -1,63 +1,22 @@
-#!/bin/sh
+#!/bin/sh -eu
 # dicemenu
 # Copyright (c) 2019 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
 
-set -e
-
-_dmenu_path() {
-    cat <<EOF
-xdg-open
-xdotool type
-${TERMINAL:-st} ${EDITOR:-vi}
-cp -nrv
-ln -sv
-mv -nv
-rm -dv
-mkdir -pv
-cd
-EOF
-dmenu_path | sed '/^\(xdg-open\|cp\|ln\|mv\|rm\)$/d'
-}
+IFS='
+'
 
 dice() {
-    for last; do :; done
-    [ -d "$last" ] && cd "$last" || cd "$(dirname "$last")"
-    IFS=' 	'
-    prog="$( _dmenu_path | dmenu -l 9 -p "Pass $# files as arguments to" | sed q )"
-    [ -z "$prog" ] && exit 1
-    if [ -n "$prog" ]; then
-        case "$prog" in
-        rm|rm[[:space:]]*)
-            polar="$(printf '%s\n' no yes | dmenu -p "Remove $# files?" -sb '#ff5370')"
-            [ "$polar" = yes ] && $prog -- "$@"
-            ;;
-        mv|mv[[:space:]]*)
-            last="$( pathmenu "$@" -p "Move $# files to" | sed q )"
-            [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
-            ;;
-        cp|cp[[:space:]]*)
-            last="$( pathmenu "$@" -p "Copy $# files to" | sed q )"
-            [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
-            ;;
-        ln|ln[[:space:]]*)
-            last="$( pathmenu "$@" -p "Link to $# files from" | sed q )"
-            [ -z "$last" ] && exit 1
-            [ -n "$last" ] && $prog -- "$@" "$last" 2>&1
-            ;;
-        *)
-            $prog "$@"
-            ;;
-        esac
-    fi | dmenu -l 10 -p 'stdout and stderr' >/dev/null 2>&1
-    return 0
+    case $# in
+        0) return 1 ;;
+        1) p=${1##*/} ;;
+        2) p="${##*/}, ${2##*/}" ;;
+        3) p="${##*/}, ${2##*/}, ${3##*/}" ;;
+        *) for last do :; done
+           p="${1##*/}, ${2##*/}, …, ${last##*/}"
+    esac
+    cmd=$(dmenu_path | dmenu -p "$p") &&
+        eval "$cmd"
 }
 
-while :; do
-    IFS='
-'
-    sels="$(pathmenu "$@")"
-    dice $sels || break
-done
+while dice $(pathmenu "$@"); do :; done
