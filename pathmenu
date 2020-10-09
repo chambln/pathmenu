@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh -euf
 # pathmenu
 # Copyright (c) 2020 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
@@ -48,7 +48,7 @@ shift $((OPTIND - 1))
 set -- "${1:-$PWD}"
 while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
     # shellcheck disable=SC2086
-    for f in $(suggest ${PATTERNS:-*}| eval "$DMENU"); do
+    for f in $(set +f; suggest ${PATTERNS:-*}| eval "$DMENU"); do
         case $f in
             -|-/)  set -- "$@" "$OLDPWD"   ;;
             \~|\~/) set -- "$@" "$HOME"     ;;
@@ -61,4 +61,5 @@ while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
             *)     printf '%s\n' "$PWD/$f" ;;
         esac
     done
+    set +f
 done
