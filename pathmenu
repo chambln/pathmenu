@@ -51,7 +51,7 @@ while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
     for f in $(suggest ${PATTERNS:-*}| eval "$DMENU"); do
         case $f in
             -|-/)  set -- "$@" "$OLDPWD"   ;;
-            ~|\~/) set -- "$@" "$HOME"     ;;
+            \~|\~/) set -- "$@" "$HOME"     ;;
             ..)    set -- "$@" "${PWD%/*}" ;;
             .)     printf '%s\n' "$PWD"    ;;
             ./)    printf '%s\n' "$PWD/"   ;;
