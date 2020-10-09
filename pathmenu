@@ -14,8 +14,7 @@ suggest() {
             # piping file names into dmenu(1).
             *"$IFS"*) continue ;;
 
-            # Protect vulnerable file names by keeping their ‘./’
-            # prefixes.
+            # Protect vulnerable file names with the ‘./’ prefix.
             ./[-~]*) printf '%s\n' ./"$match" ;;
 
             # For other matches, ‘$match’ and ‘./$match’ are
