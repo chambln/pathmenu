@@ -25,26 +25,36 @@ lsfile() {
             # matched ‘$match/’.
             *) case $IFS$*$IFS in
                    *$IFS$match/$IFS*) ;;
-                   *) printf '%s\n' "$match"
+                   *) [ -e "$match/" ] && match=$match$SUFFIX
+                      printf '%s\n' "$match"
                esac
         esac
     done
 }
 
 # shellcheck disable=SC2016
-TEST=e PATTERNS='' DMENU='dmenu -p "$PWD"/' IFS='
-' USAGE="Usage: ${0##*/} [-Pdhn] [-c COMMAND] [-p PATTERN]..."
-while getopts Pc:dhnp: OPT; do
+A=- a=- SUFFIX='' TEST=e PATTERNS='' DMENU='dmenu -p "$PWD"/' IFS='
+' USAGE="Usage: ${0##*/} [-AaPdFfhn] [-c COMMAND] [-p PATTERN]..."
+while getopts AaPc:dFfhnp: OPT; do
     case $OPT in
-        P) cd() { command cd -P "$@"; } ;;
+        A) A=A ;;
+        a) a=a ;;
         c) DMENU=$OPTARG ;;
-        [dn]) TEST=$OPT ;;
+        [dfn]) TEST=$OPT ;;
+        F) SUFFIX=/ ;;
         h) printf '%s\n' "$USAGE"; exit ;;
+        P) cd() { command cd -P "$@"; } ;;
         p) PATTERNS=$PATTERNS$IFS$OPTARG ;;
         ?) printf '%s\n' "$USAGE" >&2; exit 2 ;;
     esac
 done
 shift $((OPTIND - 1))
+
+case $A$a in
+    A-) PATTERNS=".[^.]*$IFS..?*$IFS*" ;;
+    Aa) PATTERNS="..$IFS.$IFS*" ;;
+    -a) PATTERNS="..$IFS.$IFS.[^.]*$IFS..?*$IFS*" ;;
+esac
 
 set -- "${1:-$PWD}"
 while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
