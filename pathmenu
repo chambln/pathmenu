@@ -33,7 +33,7 @@ suggest() {
 }
 
 # shellcheck disable=SC2016
-PATTERNS= DMENU='dmenu -p "$PWD"/' IFS='
+PATTERNS='' DMENU='dmenu -p "$PWD"/' IFS='
 ' USAGE="Usage: ${0##*/} [-Ph] [-c COMMAND] [-p PATTERN]..."
 while getopts Pc:hp: OPT; do
     case $OPT in
