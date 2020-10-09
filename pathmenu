@@ -5,8 +5,7 @@
 
 suggest() {
     for match do
-        # Skip unexpanded patterns.
-        [ -e "$match" ] || continue
+        [ -"$TEST" "$match" ] || continue
 
         case $match in
             # Skip file names that contain a new line character, because
@@ -32,12 +31,13 @@ suggest() {
 }
 
 # shellcheck disable=SC2016
-PATTERNS='' DMENU='dmenu -p "$PWD"/' IFS='
-' USAGE="Usage: ${0##*/} [-Ph] [-c COMMAND] [-p PATTERN]..."
-while getopts Pc:hp: OPT; do
+TEST=e PATTERNS='' DMENU='dmenu -p "$PWD"/' IFS='
+' USAGE="Usage: ${0##*/} [-Pdhn] [-c COMMAND] [-p PATTERN]..."
+while getopts Pc:dhnp: OPT; do
     case $OPT in
         P) cd() { command cd -P "$@"; } ;;
         c) DMENU=$OPTARG ;;
+        [dn]) TEST=$OPT ;;
         h) printf '%s\n' "$USAGE"; exit ;;
         p) PATTERNS=$PATTERNS$IFS$OPTARG ;;
         ?) printf '%s\n' "$USAGE" >&2; exit 2 ;;
