@@ -50,8 +50,11 @@ while [ $# -gt 0 ] && cd "$1" >/dev/null && shift; do
     # shellcheck disable=SC2086
     for f in $(set +f; suggest ${PATTERNS:-*}| eval "$DMENU"); do
         case $f in
+            \~)   f=$HOME/ ;;
+            \~/*) f=$HOME/${f#*/}
+        esac
+        case $f in
             -|-/)  set -- "$@" "$OLDPWD"   ;;
-            \~|\~/) set -- "$@" "$HOME"     ;;
             ..)    set -- "$@" "${PWD%/*}" ;;
             .)     printf '%s\n' "$PWD"    ;;
             ./)    printf '%s\n' "$PWD/"   ;;
