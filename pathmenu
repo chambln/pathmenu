@@ -15,7 +15,7 @@ suggest() {
             *"$IFS"*) continue ;;
 
             # Protect vulnerable file names with the ‘./’ prefix.
-            ./[-~]*) printf '%s\n' ./"$match" ;;
+            [-~]*) printf '%s\n' ./"$match" ;;
 
             # For other matches, ‘$match’ and ‘./$match’ are
             # almost certainly equivalent, so we can safely omit the
