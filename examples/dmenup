@@ -2,11 +2,13 @@
 
 # shellcheck disable=SC2016,SC1004
 pathmenu \
-    -p '.*/' \
-    -p '.*' \
-    -p '*/' \
-    -p '*' \
+    -AaF \
     -c'dmenu -i \
              -l 12 \
-             -p "${OLDPWD#${PWD%/}/}/${PWD#${OLDPWD%/}/}"' \
+             -p "$(
+                 case $PWD in
+                     ~|~/*) printf %s "~${PWD#~}" ;;
+                     *) printf %s "$PWD"
+                 esac
+             )"' \
     "$@"
