@@ -21,7 +21,8 @@ suggest() {
             # ‘./’ prefix for the sake of readability.
             */) printf '%s\n' "$match" ;;
 
-            # Skip directory names for which we also matched "$match/".
+            # Same as above, but skip this ‘$match’ if we also
+            # matched ‘$match/’.
             *) case $IFS$*$IFS in
                    *$IFS$match/$IFS*) ;;
                    *) printf '%s\n' "$match"
