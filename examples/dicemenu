@@ -7,12 +7,19 @@ IFS='
 '
 
 lscmd() {
-    #printf '%s\n' \
-    cat <<EOF
-${TERMINAL:-xterm} -e ${PAGER:-less} "\$@"
-${TERMINAL:-xterm} -e ${EDITOR:-${VISUAL:-vi}} "\$@"
-ln -s "\$@" "\$(pathmenu -p.. -p.*/ -p*/ -c "dmenu -p 'Symlink \$# files to'")"
-EOF
+    printf '%s "$@"\n' \
+        "${TERMINAL:-xterm} -e ${PAGER:-less}" \
+        "${TERMINAL:-xterm} -e ${VISUAL:-${EDITOR:-vi}}"
+
+    if [ $# -eq 1 ]; then
+        fmt='$1'
+        printf 'ln -s $1 "$(dmenup)"\n'
+    elif [ $# -gt 1 ]; then
+        fmt='"$@"'
+        printf 'ln -s "$@" "$(dmenup -d)"\n'
+    fi
+
+    printf "%s $fmt\n" rm
 }
 
 dice() {
@@ -24,10 +31,10 @@ dice() {
         *) for last do :; done
            p="${1##*/}, ${2##*/}, …, ${last##*/}"
     esac
-    cmd=$(lscmd | dmenu -l 9 -p "$p") &&
+    cmd=$(lscmd "$@" | dmenu -l 9 -p "$p") &&
         eval "$cmd"
 }
 
 # Word splitting is safe and intended here.
 # shellcheck disable=2046
-while dice $(pathmenu "$@"); do :; done
+while dice $(dmenup "$@"); do :; done
