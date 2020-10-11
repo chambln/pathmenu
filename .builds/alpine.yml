@@ -7,7 +7,8 @@ tasks:
   - mirror: |
       cd pathmenu
       ssh-keyscan github.com >> ~/.ssh/known_hosts
-      [ _"$(git rev-parse --abbrev-ref HEAD)" = _master ] && git push --quiet --mirror git@github.com:chambln/pathmenu
+      [ "$(git rev-parse HEAD)" = "$(git rev-parse master)" ] &&
+          git push --quiet --mirror git@github.com:chambln/pathmenu
   - lint: |
       cd pathmenu
       make lint
