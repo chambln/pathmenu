@@ -6,6 +6,7 @@
 IFS='
 '
 
+# shellcheck disable=2016
 lscmd() {
     printf '%s "$@"\n' \
         "${TERMINAL:-xterm} -e ${PAGER:-less}" \
@@ -19,7 +20,7 @@ lscmd() {
         printf 'ln -s "$@" "$(dmenup -d)"\n'
     fi
 
-    printf "%s $fmt\n" rm
+    printf "%s $fmt\\n" rm
 }
 
 dice() {
