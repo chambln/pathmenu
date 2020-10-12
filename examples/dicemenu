@@ -10,9 +10,14 @@ IFS='
 
 # shellcheck disable=2016
 lscmd() {
-    printf '%s "$@"\n' \
+    f=true
+    for arg do [ -f "$arg" ] || f=false; done
+    $f && printf '%s "$@"\n' \
         "$TERMINAL -e $PAGER" \
         "$TERMINAL -e $VISUAL"
+
+    printf '%s\n' \
+        'for f do xdg-open "$f"; done'
 
     if [ $# -eq 1 ]; then
         fmt='$1'
