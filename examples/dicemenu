@@ -1,4 +1,4 @@
-#!/bin/sh -euf
+#!/bin/sh -ef
 # dicemenu
 # Copyright (c) 2019 Gregory L. Chamberlain
 # Available under the MIT License -- see LICENSE file.
@@ -6,11 +6,13 @@
 IFS='
 '
 
+: "${TERMINAL:=xterm}" "${PAGER:=less}" "${VISUAL:=${EDITOR:=vi}}"
+
 # shellcheck disable=2016
 lscmd() {
     printf '%s "$@"\n' \
-        "${TERMINAL:-xterm} -e ${PAGER:-less}" \
-        "${TERMINAL:-xterm} -e ${VISUAL:-${EDITOR:-vi}}"
+        "$TERMINAL -e $PAGER" \
+        "$TERMINAL -e $VISUAL"
 
     if [ $# -eq 1 ]; then
         fmt='$1'
