@@ -30,13 +30,13 @@ lscmd() {
 }
 
 dice() {
+    for last do :; done
     case $# in
         0) return 1 ;;
         1) p=${1##*/} ;;
         2) p="${1##*/}, ${2##*/}" ;;
         3) p="${1##*/}, ${2##*/}, ${3##*/}" ;;
-        *) for last do :; done
-           p="${1##*/}, ${2##*/}, [$(($# - 3))…], ${last##*/}"
+        *) p="${1##*/}, ${2##*/}, [$(($# - 3))…], ${last##*/}"
     esac
     cmd=$(lscmd "$@" | dmenu -l 9 -p "$p") &&
         eval "$cmd"
@@ -44,4 +44,4 @@ dice() {
 
 # Word splitting is safe and intended here.
 # shellcheck disable=2046
-while dice $(dmenup "$@"); do :; done
+while dice $(dmenup "$@"); do cd "${last%/*}"; done
