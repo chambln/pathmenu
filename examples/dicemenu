@@ -16,10 +16,14 @@ lscmd() {
 
     if [ $# -eq 1 ]; then
         fmt='$1'
-        printf 'ln -s $1 "$(dmenup)"\n'
+        printf '%s\n' \
+            'ln -s $1 "$(dmenup)"' \
+            'cp "$1" "$(dmenup)"'
     elif [ $# -gt 1 ]; then
         fmt='"$@"'
-        printf 'ln -s "$@" "$(dmenup -d)"\n'
+        printf '%s\n' \
+            'ln -s "$@" "$(dmenup -d)"' \
+            'cp "$@" "$(dmenup -d)"'
     fi
 
     printf "%s $fmt\\n" rm
