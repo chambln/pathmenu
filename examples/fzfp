@@ -2,7 +2,7 @@
 
 # shellcheck disable=SC2016,SC1004
 pathmenu \
-    -AaF \
+    -F \
     -c'fzf --preview "[ -d {} ] && ls {} || head -n\$LINES {}" \
            --prompt="$(
                case $PWD in
@@ -10,4 +10,5 @@ pathmenu \
                    *) printf "%s\n" "$PWD"
                esac
            )/"' \
+    -p.. -p. -p\* \
     "$@"

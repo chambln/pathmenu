@@ -44,7 +44,7 @@ while getopts AaPc:dFfhnp: OPT; do
         F) SUFFIX=/ ;;
         h) printf '%s\n' "$USAGE"; exit ;;
         P) cd() { command cd -P "$@"; } ;;
-        p) PATTERNS=$PATTERNS$IFS$OPTARG ;;
+        p) A=- a=- PATTERNS=$PATTERNS$IFS$OPTARG ;;
         ?) printf '%s\n' "$USAGE" >&2; exit 2 ;;
     esac
 done
