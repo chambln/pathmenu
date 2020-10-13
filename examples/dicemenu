@@ -12,26 +12,14 @@ IFS='
 lscmd() {
     f=true
     for arg do [ -f "$arg" ] || f=false; done
-    $f && printf '%s "$@"\n' \
-        "$TERMINAL -e $PAGER" \
-        "$TERMINAL -e $VISUAL"
 
-    printf '%s\n' \
-        'for f do xdg-open "$f"; done'
+    $f && for p in "$PAGER" "$VISUAL"; do
+        printf '%s -e %s $*\n' "$TERMINAL" "$p"
+    done
 
-    if [ $# -eq 1 ]; then
-        fmt='$1'
-        printf '%s\n' \
-            'ln -s $1 "$(dmenup)"' \
-            'cp "$1" "$(dmenup)"'
-    elif [ $# -gt 1 ]; then
-        fmt='"$@"'
-        printf '%s\n' \
-            'ln -s "$@" "$(dmenup -d)"' \
-            'cp "$@" "$(dmenup -d)"'
-    fi
-
-    printf "%s $fmt\\n" rm
+    printf 'for f do %s $f; done\n' xdg-open
+    printf '%s $*\n' rm
+    printf 'f=$(dmenup) && %s $* "$f"\n' cp mv
 }
 
 dice() {
