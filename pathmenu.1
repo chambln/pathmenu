@@ -6,9 +6,11 @@
 pathmenu \- browse and select files with dmenu
 .SH SYNOPSIS
 .B pathmenu
-.RB [ \-AFPad ]
+.RB [ \-AadFfhnP ]
 .RB [ \-c
 .IR command ]
+.RB [ \-p
+.IR pattern ]...
 .RI [ directory ]
 .SH DESCRIPTION
 .PP
@@ -25,12 +27,8 @@ begins in
 or else the working directory
 .PP
 The empty selection will cause
-.B pathmenu to return to the directory in
-which it began.
-.PP
-To make a selection which is not among the list of suggestions,
-it may be necessary to hit Shift + Return in
-.BR dmenu (1).
+.B pathmenu
+to return to the directory in which it began.
 .PP
 For some programs such as
 .BR rsync (1),
@@ -42,18 +40,18 @@ directories selected in
 are printed without the trailing slash; so, the only way to have
 .B pathmenu
 include the trailing slash is by descending into the desired directory
-and entering \f[C].\f[R] or \f[C]./\f[R].
+and entering \f[C].\f[R] (dot)
+or \f[C]./\f[R] (dot-slash).
 .PP
 The empty selection will cause pathmenu to return to the directory in
 which it began.
-.PP
-To make a selection which is not among the list of suggestions,
-it may be necessary to hit Shift + Return in
-.BR dmenu (1).
 .SH OPTIONS
 .TP
 .B \-A
-Show all hidden files except dot (\f[C].\f[R]) and dot-dot (\f[C]..\f[R]).
+Show all hidden files except
+\f[C].\f[R] (dot)
+and
+\f[C]..\f[R] (dot-dot).
 .IP
 Combined with
 .B \-a
@@ -62,32 +60,49 @@ the effect is inverted so that
 \f[C]..\f[R]
 are the only hidden files shown.
 .TP
-.B \-F
-Append a forward slash to each directory name.
-.TP
-.B \-P
-Resolve symbolic links when changing directories.
-See the same option in
-.BR cd (1).
-.TP
 .B \-a
 Show hidden files.
-(See also
-.BR \-A .)
 .TP
 .BI "\-c " command
 Use
 .I command
 as the dynamic menu command instead of the default
 which is \f[C]dmenu \-p "$PWD"/\f[R].
-.IP
-.B Warning:
-This command is reinterpretted by the shell using
-.BR eval (1),
-so it is possible to execute arbitrary code this way.
 .TP
 .B \-d
-Show only directories.
+List only directories.
+.TP
+.B \-f
+List only regular files (not directories).
+.TP
+.B \-h
+Output a usage message and exit.
+.TP
+.B \-n
+List matches that refer to non-existent files.
+.TP
+.B \-F
+Append a forward slash to each directory name listed.
+.TP
+.B \-P
+Resolve symbolic links when changing directories.
+See the same option in
+.BR cd (1).
+.TP
+.BI "\-p " pattern
+List files that match the pattern according to
+.BR glob (7).
+Can be specified multiple times.
+Disables
+.B \-A
+and
+.BR \-a .
+With no
+.BR \-A ,
+.B \-a
+nor
+.B \-p
+the default pattern is * (asterisk), matching all visible files.
 .SH BUGS
 .PP
 File names are piped into

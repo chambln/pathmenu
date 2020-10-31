@@ -34,8 +34,8 @@ lsfile() {
 
 # shellcheck disable=SC2016
 A=- a=- SUFFIX='' TEST=e PATTERNS='' DMENU='dmenu -p "$PWD"/' IFS='
-' USAGE="Usage: ${0##*/} [-AaPdFfhn] [-c COMMAND] [-p PATTERN]..."
-while getopts AaPc:dFfhnp: OPT; do
+' USAGE="Usage: ${0##*/} [-AadFfhnP] [-c COMMAND] [-p PATTERN]..."
+while getopts Aac:dFfhnPp: OPT; do
     case $OPT in
         A) A=A ;;
         a) a=a ;;
