@@ -19,7 +19,8 @@ install: $(PROGRAM) $(PROGRAM).1 examples
 	cp -f examples/* $(DOC)/examples
 
 uninstall:
-	rm -f $(BIN)/$(PROGRAM) $(MAN)/$(PROGRAM).1
+	rm -f $(BIN)/$(PROGRAM) $(MAN)/$(PROGRAM).1 $(DOC)/examples/*
+	rmdir $(DOC)/examples $(DOC)
 
 lint: all
 	shellcheck $(PROGRAM) $(EXAMPLES)
