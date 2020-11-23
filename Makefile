@@ -5,7 +5,7 @@
 PROGRAM = pathmenu
 PREFIX = /usr/local
 BIN = $(PREFIX)/bin
-DOC = $(PREFIX)/share/doc
+DOC = $(PREFIX)/share/doc/$(PROGRAM)
 MAN = $(PREFIX)/share/man
 EXAMPLES = examples/dmenup examples/fzfp examples/dicemenu
 
