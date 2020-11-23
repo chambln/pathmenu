@@ -1,10 +1,5 @@
 # Pathmenu example scripts
 
-The prompts show the previously visited directory (`$OLDPWD`) behind the
-present working directory (`$PWD`) relative to one another and separated
-by a forward slash. Sounds complicated but play around with it and
-you’ll see what I mean.
-
 You can instruct pathmenu to revisit `$OLDPWD` by entering exactly one
 hyphen (‘-’) character. In dmenu you may need to hit Shift + Return to
 avoid selecting a file name that contains a hyphen.
