@@ -7,7 +7,7 @@ pathmenu \
     -F \
     -c'dmenu -i \
              -l 12 \
-             -w '${windowid:-root}' \
+             -w '"${windowid:-root}"' \
              -p "$(
                  case $PWD in
                      ~|~/*) printf %s "~${PWD#~}" ;;
