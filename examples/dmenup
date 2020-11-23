@@ -1,13 +1,13 @@
 #!/bin/sh
 
-command -v xdotool && windowid=$(xdotool getactivewindow)
+command -v xdotool >/dev/null 2>&1 && WINDOWID=$(xdotool getactivewindow)
 
 # shellcheck disable=SC2016,SC1004
 pathmenu \
     -F \
     -c'dmenu -i \
              -l 12 \
-             -w '"${windowid:-root}"' \
+             -w '"${WINDOWID:-root}"' \
              -p "$(
                  case $PWD in
                      ~|~/*) printf %s "~${PWD#~}" ;;
