@@ -10,7 +10,7 @@ As in the example below, the <code>-c *command*</code> option makes
 it possible to use something else like **fzf**(1) or **rofi**(1) as a
 drop-in replacement for dmenu.
 
-    pathmenu -c 'fzf --prompt "$PWD/ "'
+    pathmenu -c 'fzf --prompt "$PWD/"'
 
 # Installation
 
@@ -22,10 +22,12 @@ Optionally specify a prefix; for example:
 
 # Usage
 
-See **pathmenu**(1).
+See **pathmenu**(1) and the example scripts in `examples/*`.
 
-**Hint:** When using **dmenu**(1), non-existent files can be ‘selected’
-using <kbd>Shift</kbd> + <kbd>Return</kbd>.
+**Hint:** When using **dmenu**(1), partial matches can be ‘selected’
+explicitly (i.e. without completing them) using <kbd>Shift</kbd> +
+<kbd>Return</kbd>;  this is useful for selecting a non-existent file
+whose name is a substring of an existing file.
 
 # To-do
 
