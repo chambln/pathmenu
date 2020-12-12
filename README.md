@@ -31,4 +31,4 @@ whose name is a substring of an existing file.
 
 # To-do
 
-- [ ] Reimplement dicemenu in safe POSIX sh
+- [ ] Improve dicemenu
