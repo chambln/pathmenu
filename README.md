@@ -32,3 +32,7 @@ whose name is a substring of an existing file.
 # To-do
 
 - [ ] Improve dicemenu
+- [ ] Fix dicemenu globs for multiple directories (e.g. `*/` when
+      there are at least two visible directories present); it should
+      consider all matches as final selections for the secondary
+      `dice` menu to act upon, rather than trying to **cd**(1) to it.
