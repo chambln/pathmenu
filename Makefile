@@ -19,7 +19,7 @@ install: $(PROGRAM) $(PROGRAM).1 examples
 	cp -f examples/* $(DOC)/examples
 
 uninstall:
-	rm -f $(BIN)/$(PROGRAM) $(MAN)/$(PROGRAM).1 $(DOC)/examples/*
+	rm -f $(BIN)/$(PROGRAM) $(MAN)/man1/$(PROGRAM).1 $(DOC)/examples/*
 	rmdir $(DOC)/examples $(DOC)
 
 lint: all
